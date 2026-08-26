@@ -1,0 +1,38 @@
+[
+  {
+    "region_id": 1,
+    "bbox": [
+      249,
+      136,
+      413,
+      254
+    ],
+    "detector_conf": 0.5741259455680847,
+    "disease": "Tomato Septoria leaf spot",
+    "confidence": 0.33515751361846924
+  },
+  {
+    "region_id": 2,
+    "bbox": [
+      51,
+      126,
+      235,
+      254
+    ],
+    "detector_conf": 0.53659987449646,
+    "disease": "Tomato Septoria leaf spot",
+    "confidence": 0.7731406688690186
+  },
+  {
+    "region_id": 3,
+    "bbox": [
+      395,
+      130,
+      453,
+      213
+    ],
+    "detector_conf": 0.2895045876502991,
+    "disease": "Tomato Early blight leaf",
+    "confidence": 0.42379897832870483
+  }
+]

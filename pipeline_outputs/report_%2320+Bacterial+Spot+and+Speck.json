@@ -1,0 +1,26 @@
+[
+  {
+    "region_id": 1,
+    "bbox": [
+      63,
+      201,
+      405,
+      391
+    ],
+    "detector_conf": 0.648357629776001,
+    "disease": "Tomato Septoria leaf spot",
+    "confidence": 0.868194043636322
+  },
+  {
+    "region_id": 2,
+    "bbox": [
+      59,
+      464,
+      230,
+      620
+    ],
+    "detector_conf": 0.43297722935676575,
+    "disease": "Tomato Septoria leaf spot",
+    "confidence": 0.7742248773574829
+  }
+]

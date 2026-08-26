@@ -1,0 +1,236 @@
+{
+  "run_timestamp": "20260826_234652",
+  "run_directory": "output\\run_20260826_234652",
+  "total_images_processed": 5,
+  "detector_model": "runs/detect/runs_stage1_yolo/plantdoc_detector/weights/best.pt",
+  "classifier_model": "checkpoints_sota/dinov2_vits14_best.pth",
+  "confidence_threshold": 0.25,
+  "results": [
+    {
+      "image_index": 1,
+      "source_path": "PlantDoc-Object-Detection-Dataset/test\\leaf-blueberry-15281271.jpg",
+      "filename": "leaf-blueberry-15281271.jpg",
+      "annotated_image": "diagnosed_leaf-blueberry-15281271.jpg",
+      "num_regions_detected": 9,
+      "diagnoses": [
+        {
+          "region_id": 1,
+          "bbox": [
+            575,
+            80,
+            946,
+            345
+          ],
+          "detector_conf": 0.8763429522514343,
+          "disease": "Blueberry leaf",
+          "confidence": 0.612628698348999
+        },
+        {
+          "region_id": 2,
+          "bbox": [
+            766,
+            288,
+            1183,
+            509
+          ],
+          "detector_conf": 0.8698026537895203,
+          "disease": "Blueberry leaf",
+          "confidence": 0.786579966545105
+        },
+        {
+          "region_id": 3,
+          "bbox": [
+            751,
+            434,
+            1007,
+            967
+          ],
+          "detector_conf": 0.8396331071853638,
+          "disease": "Blueberry leaf",
+          "confidence": 0.37247133255004883
+        },
+        {
+          "region_id": 4,
+          "bbox": [
+            308,
+            71,
+            449,
+            270
+          ],
+          "detector_conf": 0.8380005955696106,
+          "disease": "Blueberry leaf",
+          "confidence": 0.9417432546615601
+        },
+        {
+          "region_id": 5,
+          "bbox": [
+            389,
+            258,
+            560,
+            600
+          ],
+          "detector_conf": 0.8317216634750366,
+          "disease": "Blueberry leaf",
+          "confidence": 0.9543212652206421
+        },
+        {
+          "region_id": 6,
+          "bbox": [
+            434,
+            57,
+            678,
+            273
+          ],
+          "detector_conf": 0.7413881421089172,
+          "disease": "Soyabean leaf",
+          "confidence": 0.3360944390296936
+        },
+        {
+          "region_id": 7,
+          "bbox": [
+            461,
+            242,
+            646,
+            372
+          ],
+          "detector_conf": 0.538963794708252,
+          "disease": "Blueberry leaf",
+          "confidence": 0.2875705361366272
+        },
+        {
+          "region_id": 8,
+          "bbox": [
+            556,
+            341,
+            704,
+            510
+          ],
+          "detector_conf": 0.5294627547264099,
+          "disease": "Blueberry leaf",
+          "confidence": 0.39520031213760376
+        },
+        {
+          "region_id": 9,
+          "bbox": [
+            320,
+            245,
+            422,
+            398
+          ],
+          "detector_conf": 0.4477362036705017,
+          "disease": "Blueberry leaf",
+          "confidence": 0.7470285892486572
+        }
+      ]
+    },
+    {
+      "image_index": 2,
+      "source_path": "PlantDoc-Object-Detection-Dataset/test\\potato-early-blight-alternaria-alternata-lesion-on-a-potato-leaf-a1w1em.jpg",
+      "filename": "potato-early-blight-alternaria-alternata-lesion-on-a-potato-leaf-a1w1em.jpg",
+      "annotated_image": "diagnosed_potato-early-blight-alternaria-alternata-lesion-on-a-potato-leaf-a1w1em.jpg",
+      "num_regions_detected": 1,
+      "diagnoses": [
+        {
+          "region_id": 1,
+          "bbox": [
+            0,
+            0,
+            589,
+            540
+          ],
+          "detector_conf": 1.0,
+          "disease": "Potato leaf early blight",
+          "confidence": 0.804613471031189,
+          "is_fallback_full_scene": true
+        }
+      ]
+    },
+    {
+      "image_index": 3,
+      "source_path": "PlantDoc-Object-Detection-Dataset/TEST\\early-blight-alternaria-alternata-leaf-spotting-on-potato-leaf-X91XJE.jpg",
+      "filename": "early-blight-alternaria-alternata-leaf-spotting-on-potato-leaf-X91XJE.jpg",
+      "annotated_image": "diagnosed_early-blight-alternaria-alternata-leaf-spotting-on-potato-leaf-X91XJE.jpg",
+      "num_regions_detected": 2,
+      "diagnoses": [
+        {
+          "region_id": 1,
+          "bbox": [
+            6,
+            185,
+            1300,
+            951
+          ],
+          "detector_conf": 0.42413246631622314,
+          "disease": "Potato leaf early blight",
+          "confidence": 0.8348637819290161
+        },
+        {
+          "region_id": 2,
+          "bbox": [
+            1,
+            190,
+            1298,
+            948
+          ],
+          "detector_conf": 0.3690251111984253,
+          "disease": "Potato leaf early blight",
+          "confidence": 0.8456445336341858
+        }
+      ]
+    },
+    {
+      "image_index": 4,
+      "source_path": "PlantDoc-Object-Detection-Dataset/test\\03gb.jpg",
+      "filename": "03gb.jpg",
+      "annotated_image": "diagnosed_03gb.jpg",
+      "num_regions_detected": 2,
+      "diagnoses": [
+        {
+          "region_id": 1,
+          "bbox": [
+            171,
+            5,
+            469,
+            290
+          ],
+          "detector_conf": 0.3154674768447876,
+          "disease": "grape leaf black rot",
+          "confidence": 0.8562732934951782
+        },
+        {
+          "region_id": 2,
+          "bbox": [
+            168,
+            9,
+            471,
+            289
+          ],
+          "detector_conf": 0.3098621070384979,
+          "disease": "grape leaf black rot",
+          "confidence": 0.816020131111145
+        }
+      ]
+    },
+    {
+      "image_index": 5,
+      "source_path": "PlantDoc-Object-Detection-Dataset/test\\surface.jpg",
+      "filename": "surface.jpg",
+      "annotated_image": "diagnosed_surface.jpg",
+      "num_regions_detected": 1,
+      "diagnoses": [
+        {
+          "region_id": 1,
+          "bbox": [
+            0,
+            6,
+            431,
+            314
+          ],
+          "detector_conf": 0.7140877842903137,
+          "disease": "Squash Powdery mildew leaf",
+          "confidence": 0.8778609037399292
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,196 @@
+{
+  "model": "resnet50",
+  "checkpoint": "checkpoints/resnet50_best.pth",
+  "accuracy": 0.614406779661017,
+  "macro_precision": 0.6203582627689771,
+  "macro_recall": 0.6010551948051949,
+  "macro_f1": 0.5979556655197964,
+  "weighted_precision": 0.643545184805778,
+  "weighted_recall": 0.614406779661017,
+  "weighted_f1": 0.6150657136587503,
+  "test_samples": 236,
+  "num_classes": 28,
+  "classification_report": {
+    "Apple Scab Leaf": {
+      "precision": 0.8888888888888888,
+      "recall": 0.8,
+      "f1-score": 0.8421052631578947,
+      "support": 10.0
+    },
+    "Apple leaf": {
+      "precision": 0.6153846153846154,
+      "recall": 0.8888888888888888,
+      "f1-score": 0.7272727272727273,
+      "support": 9.0
+    },
+    "Apple rust leaf": {
+      "precision": 0.8571428571428571,
+      "recall": 0.6,
+      "f1-score": 0.7058823529411765,
+      "support": 10.0
+    },
+    "Bell_pepper leaf": {
+      "precision": 0.625,
+      "recall": 0.625,
+      "f1-score": 0.625,
+      "support": 8.0
+    },
+    "Bell_pepper leaf spot": {
+      "precision": 0.5833333333333334,
+      "recall": 0.7777777777777778,
+      "f1-score": 0.6666666666666666,
+      "support": 9.0
+    },
+    "Blueberry leaf": {
+      "precision": 0.7,
+      "recall": 0.6363636363636364,
+      "f1-score": 0.6666666666666666,
+      "support": 11.0
+    },
+    "Cherry leaf": {
+      "precision": 0.8333333333333334,
+      "recall": 0.5,
+      "f1-score": 0.625,
+      "support": 10.0
+    },
+    "Corn Gray leaf spot": {
+      "precision": 0.1,
+      "recall": 0.25,
+      "f1-score": 0.14285714285714285,
+      "support": 4.0
+    },
+    "Corn leaf blight": {
+      "precision": 0.5555555555555556,
+      "recall": 0.4166666666666667,
+      "f1-score": 0.47619047619047616,
+      "support": 12.0
+    },
+    "Corn rust leaf": {
+      "precision": 1.0,
+      "recall": 0.9,
+      "f1-score": 0.9473684210526315,
+      "support": 10.0
+    },
+    "Peach leaf": {
+      "precision": 0.6666666666666666,
+      "recall": 0.6666666666666666,
+      "f1-score": 0.6666666666666666,
+      "support": 9.0
+    },
+    "Potato leaf early blight": {
+      "precision": 0.375,
+      "recall": 0.375,
+      "f1-score": 0.375,
+      "support": 8.0
+    },
+    "Potato leaf late blight": {
+      "precision": 0.5,
+      "recall": 0.375,
+      "f1-score": 0.42857142857142855,
+      "support": 8.0
+    },
+    "Raspberry leaf": {
+      "precision": 0.875,
+      "recall": 1.0,
+      "f1-score": 0.9333333333333333,
+      "support": 7.0
+    },
+    "Soyabean leaf": {
+      "precision": 0.625,
+      "recall": 0.625,
+      "f1-score": 0.625,
+      "support": 8.0
+    },
+    "Squash Powdery mildew leaf": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 6.0
+    },
+    "Strawberry leaf": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 8.0
+    },
+    "Tomato Early blight leaf": {
+      "precision": 0.6363636363636364,
+      "recall": 0.7777777777777778,
+      "f1-score": 0.7,
+      "support": 9.0
+    },
+    "Tomato Septoria leaf spot": {
+      "precision": 0.5625,
+      "recall": 0.8181818181818182,
+      "f1-score": 0.6666666666666666,
+      "support": 11.0
+    },
+    "Tomato leaf": {
+      "precision": 0.6,
+      "recall": 0.75,
+      "f1-score": 0.6666666666666666,
+      "support": 8.0
+    },
+    "Tomato leaf bacterial spot": {
+      "precision": 0.3333333333333333,
+      "recall": 0.2222222222222222,
+      "f1-score": 0.26666666666666666,
+      "support": 9.0
+    },
+    "Tomato leaf late blight": {
+      "precision": 0.7272727272727273,
+      "recall": 0.8,
+      "f1-score": 0.7619047619047619,
+      "support": 10.0
+    },
+    "Tomato leaf mosaic virus": {
+      "precision": 1.0,
+      "recall": 0.4,
+      "f1-score": 0.5714285714285714,
+      "support": 10.0
+    },
+    "Tomato leaf yellow virus": {
+      "precision": 0.8333333333333334,
+      "recall": 0.8333333333333334,
+      "f1-score": 0.8333333333333334,
+      "support": 6.0
+    },
+    "Tomato mold leaf": {
+      "precision": 0.8,
+      "recall": 0.6666666666666666,
+      "f1-score": 0.7272727272727273,
+      "support": 6.0
+    },
+    "Tomato two spotted spider mites leaf": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1-score": 0.0,
+      "support": 12.0
+    },
+    "grape leaf": {
+      "precision": 0.07692307692307693,
+      "recall": 0.125,
+      "f1-score": 0.09523809523809523,
+      "support": 8.0
+    },
+    "grape leaf black rot": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1-score": 0.0,
+      "support": 0.0
+    },
+    "accuracy": 0.614406779661017,
+    "macro avg": {
+      "precision": 0.6203582627689771,
+      "recall": 0.6010551948051949,
+      "f1-score": 0.5979556655197964,
+      "support": 236.0
+    },
+    "weighted avg": {
+      "precision": 0.643545184805778,
+      "recall": 0.614406779661017,
+      "f1-score": 0.6150657136587503,
+      "support": 236.0
+    }
+  }
+}

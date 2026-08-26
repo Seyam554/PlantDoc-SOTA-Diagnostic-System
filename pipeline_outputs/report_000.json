@@ -1,0 +1,14 @@
+[
+  {
+    "region_id": 1,
+    "bbox": [
+      219,
+      0,
+      963,
+      758
+    ],
+    "detector_conf": 0.3150911033153534,
+    "disease": "Corn leaf blight",
+    "confidence": 0.30716192722320557
+  }
+]

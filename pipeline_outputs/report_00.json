@@ -1,0 +1,14 @@
+[
+  {
+    "region_id": 1,
+    "bbox": [
+      91,
+      21,
+      468,
+      269
+    ],
+    "detector_conf": 0.4583004117012024,
+    "disease": "Bell_pepper leaf spot",
+    "confidence": 0.5312315225601196
+  }
+]

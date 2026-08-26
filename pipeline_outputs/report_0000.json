@@ -1,0 +1,14 @@
+[
+  {
+    "region_id": 1,
+    "bbox": [
+      1,
+      35,
+      934,
+      919
+    ],
+    "detector_conf": 0.876151442527771,
+    "disease": "grape leaf",
+    "confidence": 0.9555978178977966
+  }
+]

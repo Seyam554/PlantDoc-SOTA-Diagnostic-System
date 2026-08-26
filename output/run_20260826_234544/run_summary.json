@@ -1,0 +1,293 @@
+{
+  "run_timestamp": "20260826_234544",
+  "run_directory": "output\\run_20260826_234544",
+  "total_images_processed": 10,
+  "detector_model": "runs/detect/runs_stage1_yolo/plantdoc_detector/weights/best.pt",
+  "classifier_model": "checkpoints_sota/dinov2_vits14_best.pth",
+  "confidence_threshold": 0.25,
+  "results": [
+    {
+      "image_index": 1,
+      "source_path": "PlantDoc-Object-Detection-Dataset/TEST\\052609%20Hartman%20Crabapple%20scab%20single%20leaf.JPG.jpg",
+      "filename": "052609%20Hartman%20Crabapple%20scab%20single%20leaf.JPG.jpg",
+      "annotated_image": "diagnosed_052609%20Hartman%20Crabapple%20scab%20single%20leaf.JPG.jpg",
+      "num_regions_detected": 1,
+      "diagnoses": [
+        {
+          "region_id": 1,
+          "bbox": [
+            24,
+            51,
+            493,
+            288
+          ],
+          "detector_conf": 0.3162347972393036,
+          "disease": "Apple Scab Leaf",
+          "confidence": 0.8653308153152466
+        }
+      ]
+    },
+    {
+      "image_index": 2,
+      "source_path": "PlantDoc-Object-Detection-Dataset/test\\powdery-mildew-erysiphe-plantani-on-young-sycamore-leaves-b774tm.jpg",
+      "filename": "powdery-mildew-erysiphe-plantani-on-young-sycamore-leaves-b774tm.jpg",
+      "annotated_image": "diagnosed_powdery-mildew-erysiphe-plantani-on-young-sycamore-leaves-b774tm.jpg",
+      "num_regions_detected": 3,
+      "diagnoses": [
+        {
+          "region_id": 1,
+          "bbox": [
+            83,
+            59,
+            428,
+            498
+          ],
+          "detector_conf": 0.6656293272972107,
+          "disease": "Squash Powdery mildew leaf",
+          "confidence": 0.8347554206848145
+        },
+        {
+          "region_id": 2,
+          "bbox": [
+            0,
+            186,
+            356,
+            518
+          ],
+          "detector_conf": 0.3788934051990509,
+          "disease": "Squash Powdery mildew leaf",
+          "confidence": 0.5781098008155823
+        },
+        {
+          "region_id": 3,
+          "bbox": [
+            1,
+            0,
+            264,
+            178
+          ],
+          "detector_conf": 0.36914852261543274,
+          "disease": "Squash Powdery mildew leaf",
+          "confidence": 0.933708906173706
+        }
+      ]
+    },
+    {
+      "image_index": 3,
+      "source_path": "PlantDoc-Object-Detection-Dataset/test\\28-500x375.jpg",
+      "filename": "28-500x375.jpg",
+      "annotated_image": "diagnosed_28-500x375.jpg",
+      "num_regions_detected": 1,
+      "diagnoses": [
+        {
+          "region_id": 1,
+          "bbox": [
+            149,
+            47,
+            454,
+            316
+          ],
+          "detector_conf": 0.2953363060951233,
+          "disease": "Apple Scab Leaf",
+          "confidence": 0.9383200407028198
+        }
+      ]
+    },
+    {
+      "image_index": 4,
+      "source_path": "PlantDoc-Object-Detection-Dataset/TEST\\late_blight_tomato_leaf_spore1x1200.jpg",
+      "filename": "late_blight_tomato_leaf_spore1x1200.jpg",
+      "annotated_image": "diagnosed_late_blight_tomato_leaf_spore1x1200.jpg",
+      "num_regions_detected": 3,
+      "diagnoses": [
+        {
+          "region_id": 1,
+          "bbox": [
+            54,
+            501,
+            569,
+            833
+          ],
+          "detector_conf": 0.5099546909332275,
+          "disease": "Tomato leaf late blight",
+          "confidence": 0.7016217708587646
+        },
+        {
+          "region_id": 2,
+          "bbox": [
+            311,
+            56,
+            1197,
+            487
+          ],
+          "detector_conf": 0.5071711540222168,
+          "disease": "Tomato leaf late blight",
+          "confidence": 0.9311961531639099
+        },
+        {
+          "region_id": 3,
+          "bbox": [
+            516,
+            339,
+            1198,
+            850
+          ],
+          "detector_conf": 0.4840209186077118,
+          "disease": "Tomato leaf late blight",
+          "confidence": 0.9674398899078369
+        }
+      ]
+    },
+    {
+      "image_index": 5,
+      "source_path": "PlantDoc-Object-Detection-Dataset/test\\99e886623c2080c22f6519b0e708c531.jpg",
+      "filename": "99e886623c2080c22f6519b0e708c531.jpg",
+      "annotated_image": "diagnosed_99e886623c2080c22f6519b0e708c531.jpg",
+      "num_regions_detected": 3,
+      "diagnoses": [
+        {
+          "region_id": 1,
+          "bbox": [
+            81,
+            50,
+            234,
+            281
+          ],
+          "detector_conf": 0.45672371983528137,
+          "disease": "Apple rust leaf",
+          "confidence": 0.6077717542648315
+        },
+        {
+          "region_id": 2,
+          "bbox": [
+            212,
+            0,
+            349,
+            184
+          ],
+          "detector_conf": 0.36217331886291504,
+          "disease": "Apple rust leaf",
+          "confidence": 0.7403855323791504
+        },
+        {
+          "region_id": 3,
+          "bbox": [
+            212,
+            0,
+            349,
+            182
+          ],
+          "detector_conf": 0.28157880902290344,
+          "disease": "Apple rust leaf",
+          "confidence": 0.6785989999771118
+        }
+      ]
+    },
+    {
+      "image_index": 6,
+      "source_path": "PlantDoc-Object-Detection-Dataset/TEST\\50%20Leafmold%20Top.jpg",
+      "filename": "50%20Leafmold%20Top.jpg",
+      "annotated_image": "diagnosed_50%20Leafmold%20Top.jpg",
+      "num_regions_detected": 1,
+      "diagnoses": [
+        {
+          "region_id": 1,
+          "bbox": [
+            10,
+            7,
+            244,
+            143
+          ],
+          "detector_conf": 0.3588631749153137,
+          "disease": "Tomato mold leaf",
+          "confidence": 0.924917459487915
+        }
+      ]
+    },
+    {
+      "image_index": 7,
+      "source_path": "PlantDoc-Object-Detection-Dataset/TEST\\Apple-Leaf-Wallpaper-17.jpg",
+      "filename": "Apple-Leaf-Wallpaper-17.jpg",
+      "annotated_image": "diagnosed_Apple-Leaf-Wallpaper-17.jpg",
+      "num_regions_detected": 1,
+      "diagnoses": [
+        {
+          "region_id": 1,
+          "bbox": [
+            0,
+            0,
+            3840,
+            2160
+          ],
+          "detector_conf": 1.0,
+          "disease": "Peach leaf",
+          "confidence": 0.3379466235637665,
+          "is_fallback_full_scene": true
+        }
+      ]
+    },
+    {
+      "image_index": 8,
+      "source_path": "PlantDoc-Object-Detection-Dataset/TEST\\summersquashpowderymildew.jpg",
+      "filename": "summersquashpowderymildew.jpg",
+      "annotated_image": "diagnosed_summersquashpowderymildew.jpg",
+      "num_regions_detected": 1,
+      "diagnoses": [
+        {
+          "region_id": 1,
+          "bbox": [
+            9,
+            7,
+            229,
+            174
+          ],
+          "detector_conf": 0.8842360973358154,
+          "disease": "Squash Powdery mildew leaf",
+          "confidence": 0.9449349641799927
+        }
+      ]
+    },
+    {
+      "image_index": 9,
+      "source_path": "PlantDoc-Object-Detection-Dataset/test\\7190f27ead55c0f6e3ff8b982972810a5446a9713a49d_1260x1260.jpg",
+      "filename": "7190f27ead55c0f6e3ff8b982972810a5446a9713a49d_1260x1260.jpg",
+      "annotated_image": "diagnosed_7190f27ead55c0f6e3ff8b982972810a5446a9713a49d_1260x1260.jpg",
+      "num_regions_detected": 1,
+      "diagnoses": [
+        {
+          "region_id": 1,
+          "bbox": [
+            385,
+            36,
+            646,
+            1212
+          ],
+          "detector_conf": 0.9356261491775513,
+          "disease": "Peach leaf",
+          "confidence": 0.5313825607299805
+        }
+      ]
+    },
+    {
+      "image_index": 10,
+      "source_path": "PlantDoc-Object-Detection-Dataset/test\\brleaf2_zoom.jpg",
+      "filename": "brleaf2_zoom.jpg",
+      "annotated_image": "diagnosed_brleaf2_zoom.jpg",
+      "num_regions_detected": 1,
+      "diagnoses": [
+        {
+          "region_id": 1,
+          "bbox": [
+            135,
+            5,
+            768,
+            669
+          ],
+          "detector_conf": 0.8369316458702087,
+          "disease": "grape leaf black rot",
+          "confidence": 0.96373450756073
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "run_timestamp": "20260827_195809",
+  "run_directory": "output\\run_20260827_195809",
+  "total_images_processed": 1,
+  "detector_model": "runs/detect/runs_stage1_yolo/plantdoc_detector/weights/best.pt",
+  "classifier_model": "checkpoints_sota/dinov2_vits14_best.pth",
+  "confidence_threshold": 0.25,
+  "results": [
+    {
+      "image_index": 1,
+      "source_path": "PlantDoc-Object-Detection-Dataset/test\\leaf-raspberry-isolated-on-a-white-stock-photography-image-10106222-1625198.jpg",
+      "filename": "leaf-raspberry-isolated-on-a-white-stock-photography-image-10106222-1625198.jpg",
+      "annotated_image": "diagnosed_leaf-raspberry-isolated-on-a-white-stock-photography-image-10106222-1625198.jpg",
+      "num_regions_detected": 5,
+      "diagnoses": [
+        {
+          "region_id": 1,
+          "bbox": [
+            182,
+            401,
+            559,
+            714
+          ],
+          "detector_conf": 0.8775054216384888,
+          "disease": "Raspberry leaf",
+          "confidence": 0.817859411239624
+        },
+        {
+          "region_id": 2,
+          "bbox": [
+            562,
+            763,
+            1054,
+            1092
+          ],
+          "detector_conf": 0.8634596467018127,
+          "disease": "Apple leaf",
+          "confidence": 0.456717848777771
+        },
+        {
+          "region_id": 3,
+          "bbox": [
+            442,
+            113,
+            800,
+            543
+          ],
+          "detector_conf": 0.841300904750824,
+          "disease": "Raspberry leaf",
+          "confidence": 0.8964803218841553
+        },
+        {
+          "region_id": 4,
+          "bbox": [
+            103,
+            753,
+            568,
+            1079
+          ],
+          "detector_conf": 0.8323683142662048,
+          "disease": "Raspberry leaf",
+          "confidence": 0.33755430579185486
+        },
+        {
+          "region_id": 5,
+          "bbox": [
+            550,
+            455,
+            976,
+            733
+          ],
+          "detector_conf": 0.8320078253746033,
+          "disease": "Raspberry leaf",
+          "confidence": 0.5389081835746765
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "run_timestamp": "20260827_195447",
+  "run_directory": "output\\run_20260827_195447",
+  "total_images_processed": 2,
+  "detector_model": "runs/detect/runs_stage1_yolo/plantdoc_detector/weights/best.pt",
+  "classifier_model": "checkpoints_sota/dinov2_vits14_best.pth",
+  "confidence_threshold": 0.25,
+  "results": [
+    {
+      "image_index": 1,
+      "source_path": "PlantDoc-Object-Detection-Dataset/TEST\\three-raspberry-green-leaves-isolated-white-background-62022932.jpg",
+      "filename": "three-raspberry-green-leaves-isolated-white-background-62022932.jpg",
+      "annotated_image": "diagnosed_three-raspberry-green-leaves-isolated-white-background-62022932.jpg",
+      "num_regions_detected": 4,
+      "diagnoses": [
+        {
+          "region_id": 1,
+          "bbox": [
+            334,
+            531,
+            805,
+            1225
+          ],
+          "detector_conf": 0.7415632009506226,
+          "disease": "Raspberry leaf",
+          "confidence": 0.38522014021873474
+        },
+        {
+          "region_id": 2,
+          "bbox": [
+            49,
+            251,
+            668,
+            604
+          ],
+          "detector_conf": 0.5306311845779419,
+          "disease": "Raspberry leaf",
+          "confidence": 0.48955994844436646
+        },
+        {
+          "region_id": 3,
+          "bbox": [
+            567,
+            364,
+            1029,
+            816
+          ],
+          "detector_conf": 0.513830304145813,
+          "disease": "Raspberry leaf",
+          "confidence": 0.40930265188217163
+        },
+        {
+          "region_id": 4,
+          "bbox": [
+            330,
+            528,
+            808,
+            1217
+          ],
+          "detector_conf": 0.4906509220600128,
+          "disease": "grape leaf",
+          "confidence": 0.4205423593521118
+        }
+      ]
+    },
+    {
+      "image_index": 2,
+      "source_path": "PlantDoc-Object-Detection-Dataset/TEST\\grape_F15a.jpg",
+      "filename": "grape_F15a.jpg",
+      "annotated_image": "diagnosed_grape_F15a.jpg",
+      "num_regions_detected": 2,
+      "diagnoses": [
+        {
+          "region_id": 1,
+          "bbox": [
+            130,
+            14,
+            314,
+            191
+          ],
+          "detector_conf": 0.7888813018798828,
+          "disease": "grape leaf black rot",
+          "confidence": 0.986944317817688
+        },
+        {
+          "region_id": 2,
+          "bbox": [
+            46,
+            42,
+            136,
+            206
+          ],
+          "detector_conf": 0.5671657919883728,
+          "disease": "grape leaf black rot",
+          "confidence": 0.19795262813568115
+        }
+      ]
+    }
+  ]
+}

@@ -1,5 +1,6 @@
-# Virtual Environment
+# Virtual Environments
 .venv/
+.venv-1/
 env/
 venv/
 ENV/
@@ -11,17 +12,32 @@ __pycache__/
 *.so
 .pytest_cache/
 
-# Large Datasets
+# Large Datasets (regenerate with the runbooks in README.md)
 PlantDoc-Dataset/
 PlantDoc-Object-Detection-Dataset/
+PlantDoc-Cropped/
+PlantDoc-Cropped-Plus/
+PlantDoc-Raw/
 dataset_yolo/
+roi_preview/
 
-# Large Model Weights (too big for GitHub 100MB limit)
+# Large Model Weights (too big for GitHub's 100MB limit)
 *.pth
 *.pt
+*.onnx
+*.qonnx
 checkpoints/
 checkpoints_sota/
+checkpoints_fpga/
 runs/
+weights/
+
+# Generated FPGA build/eval artifacts
+fpga/export/
+fpga/finn_out/
+fpga/finn_out*/
+fpga/hls4ml_prj/
+results_fpga/
 
 # OS / IDE
 .DS_Store

@@ -32,11 +32,11 @@ checkpoints_fpga/
 runs/
 weights/
 
-# Generated FPGA build/eval artifacts
-fpga/export/
-fpga/finn_out/
-fpga/finn_out*/
-fpga/hls4ml_prj/
+# Generated FPGA build / eval artifacts (any depth)
+export/
+finn_out/
+finn_out*/
+hls4ml_prj/
 results_fpga/
 
 # OS / IDE

@@ -11,15 +11,17 @@ Two connected efforts on the benchmark **PlantDoc dataset** (Singh et al., CoDS-
 in-the-wild plant disease detection & fine-grained classification:
 
 1. **Part A — the 3-stage diagnostic system** (YOLOv11 leaf detector → DINOv2 ViT classifier → TTA aggregation).
-2. **Part B — `fpga/`: a < 100,000-parameter INT8 CNN** distilled from the Part-A models, targeting the
-   **Puzhi PA200T-StarLite (AMD Artix-7 XC7A200T)** via FINN / hls4ml / Vivado. Goal: keep accuracy as
-   high as possible (target ≥ 80 % on the PlantDoc test split) at a size that fits on-chip BRAM.
+2. **Part B — [`PlantEdgeNet-FPGA/`](PlantEdgeNet-FPGA/): a < 100,000-parameter INT8 CNN** distilled from
+   the Part-A models, targeting the **Puzhi PA200T-StarLite (AMD Artix-7 XC7A200T)** via FINN / hls4ml /
+   Vivado. Goal: keep accuracy as high as possible (target ≥ 80 % on the PlantDoc test split) at a size
+   that fits on-chip BRAM. **This is a self-contained sub-folder** — model, data prep, KD, training,
+   quantization, export, inference, FPGA build configs, and the full research write-up all live there.
 
-> **For AI agents:** read this file top-to-bottom, then `research/RESEARCH_REPORT.md`,
-> `research/ACCURACY_TO_80.md`, `research/IMPLEMENTATION_PLAN.md`, and `fpga/README.md`.
-> Those four documents contain the complete design rationale, the literature basis, the accuracy
-> levers, the milestone plan, and every command. Section 9 below ("Reproduce Part B") is the
-> canonical runbook.
+> **For AI agents:** for Part A read this file. For Part B read
+> [`PlantEdgeNet-FPGA/README.md`](PlantEdgeNet-FPGA/README.md) (the canonical runbook), then
+> `PlantEdgeNet-FPGA/research/{RESEARCH_REPORT,ACCURACY_TO_80,IMPLEMENTATION_PLAN}.md` and
+> `PlantEdgeNet-FPGA/references.md`. Those contain the complete design rationale, literature basis,
+> accuracy levers, milestone plan, and every command.
 
 ---
 
@@ -57,7 +59,10 @@ in-the-wild plant disease detection & fine-grained classification:
 
 ---
 
-## 🎯 2. Part B — the FPGA sub-project (`fpga/`)
+## 🎯 2. Part B — the FPGA sub-project ([`PlantEdgeNet-FPGA/`](PlantEdgeNet-FPGA/))
+
+Self-contained. File paths in this section are relative to `PlantEdgeNet-FPGA/` (e.g.
+`fpga/model_tiny.py` = `PlantEdgeNet-FPGA/fpga/model_tiny.py`).
 
 ### 2.1 The problem and the honest constraints
 
@@ -113,11 +118,12 @@ PlantEdgeNet (Brevitas QAT) ──► QONNX ──► FINN compiler ──► st
 
 | File | Contents |
 |---|---|
-| `research/RESEARCH_REPORT.md` | Hardware analysis, literature synthesis (KD, tiny CNNs, INT8 best practice, FINN vs hls4ml), the recommended architecture + quantization recipe, risk table, ~35 sources. |
-| `research/ACCURACY_TO_80.md` | Deep dive on reaching ≥ 80 %: the honest ceiling, every lever ranked by expected gain, the selected path, projected numbers, fallback. |
-| `research/IMPLEMENTATION_PLAN.md` | 10 milestones (M0–M9) with acceptance criteria and a file map. |
-| `fpga/README.md` | The command-level runbook for `fpga/`. |
-| `Papers/` | 20+ open-access PDFs: PlantDoc, DINOv2, ConvNeXt, Swin, quantization whitepapers (Nagel; Krishnamoorthi; NVIDIA), FINN & hls4ml benchmarks, MCUNet / MCUNetV2, depthwise-separable FPGA accelerators, in-the-wild plant-disease benchmarking, domain-gap reviews. |
+| `PlantEdgeNet-FPGA/README.md` | The command-level runbook for the FPGA sub-project. |
+| `PlantEdgeNet-FPGA/research/RESEARCH_REPORT.md` | Hardware analysis, literature synthesis (KD, tiny CNNs, INT8 best practice, FINN vs hls4ml), recommended architecture + quantization recipe, risk table, ~35 sources. |
+| `PlantEdgeNet-FPGA/research/ACCURACY_TO_80.md` | Deep dive on reaching ≥ 80 %: the honest ceiling, every lever ranked by expected gain, the selected path, projected numbers, fallback. |
+| `PlantEdgeNet-FPGA/research/IMPLEMENTATION_PLAN.md` | 10 milestones (M0–M9) with acceptance criteria and a file map. |
+| `PlantEdgeNet-FPGA/references.md` | All papers the FPGA design is built on, grouped by topic, with links. |
+| `Papers/` | Part-A research PDFs (PlantDoc, DINOv2, ConvNeXt, Swin, PlantXViT). |
 
 ---
 
@@ -134,11 +140,11 @@ python -m venv .venv-1
 # Windows:  .\.venv-1\Scripts\Activate.ps1     Linux/Mac:  source .venv-1/bin/activate
 
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
-pip install -r requirements.txt                 # Part A
-pip install -r fpga/requirements-fpga.txt       # Part B extras: timm, brevitas, qonnx, onnx, onnxruntime
+pip install -r requirements.txt                                # Part A
+pip install -r PlantEdgeNet-FPGA/fpga/requirements-fpga.txt    # Part B extras: timm, brevitas, qonnx, onnx, onnxruntime
 ```
 
-`fpga/train_fpga.py`, `predict.py`, `prepare_data.py`, `leaf_roi.py`, `train_teacher.py`, `kd.py` need
+The Part-B scripts (`train_fpga.py`, `predict.py`, `prepare_data.py`, `leaf_roi.py`, `train_teacher.py`, `kd.py`) need
 only **torch, torchvision, numpy, matplotlib**. `timm` is needed for ConvNeXt/EfficientNet teachers;
 `brevitas` + `qonnx` for `--qat` and the FINN export. Missing optional deps degrade gracefully
 (fewer teachers / PTQ ships instead of QAT).
@@ -162,28 +168,30 @@ Part A (3-stage diagnostic system)
 ├── run_random_tests.py                # batch diagnosis, timestamped output/
 ├── results/ · results_sota/ · output/  # metrics, confusion matrices, annotated images
 
-Part B (fpga/  — sub-100K INT8 classifier for Artix-7)
-├── model_tiny.py       # PlantEdgeNet: depthwise-separable CNN + optional Squeeze-Excite, <100K params
-├── leaf_roi.py         # HSV / Excess-Green leaf-ROI crop (FPGA-cheap) + preview grid
-├── prepare_data.py     # build PlantDoc-Cropped[-Plus]/{train,test}: crop + map PlantVillage + fold web data
-├── kd.py               # multi-teacher soft targets + DIST relational loss + attention-transfer feature loss
-├── train_teacher.py    # fine-tune a timm backbone (ConvNeXt/EfficientNet) into a KD teacher
-├── train_fpga.py       # ONE-SHOT: GPU-cached train + KD + adaptive-BN + INT8 PTQ + INT8 QAT + summary
-├── distill.py          # standalone PlantVillage-pretrain / multi-teacher-distill (finer control)
-├── quantize_qat.py     # Brevitas INT8 QAT (per-channel sym weights) + QONNX export path
-├── ptq.py              # INT8 PTQ ablation: CLE + bias-correction + AdaRound
-├── export_onnx.py      # QONNX (FINN) / ONNX (hls4ml) export + PyTorch↔ONNX parity check
-├── predict.py          # run any checkpoint (FP32 / INT8-PTQ / INT8-QAT) on images, report accuracy + grid
-├── finn_build.py       # FINN dataflow build config for xc7a200tfbg484-2  (run inside FINN Docker)
-├── hls4ml_build.py     # hls4ml build config for xc7a200tfbg484-2       (needs Vitis HLS)
-├── eval_common.py      # shared loaders/metrics for the standalone ptq.py / quantize_qat.py mains
-├── requirements-fpga.txt
-└── README.md           # fpga/ command-level runbook
-
-research/
-├── RESEARCH_REPORT.md      # full design + literature basis for Part B
-├── ACCURACY_TO_80.md       # deep research: how to push the FPGA model to ≥80%
-└── IMPLEMENTATION_PLAN.md   # 10-milestone plan with acceptance criteria
+Part B  ──  PlantEdgeNet-FPGA/  (self-contained sub-100K INT8 classifier for Artix-7)
+├── README.md               # canonical runbook for the FPGA sub-project
+├── references.md            # papers the design is built on (grouped, with links)
+├── models.py / models_sota.py   # vendored backbone defs (for loading teacher checkpoints)
+├── research/
+│   ├── RESEARCH_REPORT.md        # full design + literature basis
+│   ├── ACCURACY_TO_80.md         # deep research: how to push the model to ≥80%
+│   └── IMPLEMENTATION_PLAN.md    # 10-milestone plan + acceptance criteria
+└── fpga/
+    ├── model_tiny.py       # PlantEdgeNet: depthwise-separable CNN + optional Squeeze-Excite, <100K params
+    ├── leaf_roi.py         # HSV / Excess-Green leaf-ROI crop (FPGA-cheap) + preview grid
+    ├── prepare_data.py     # build PlantDoc-Cropped[-Plus]/{train,test}: crop + map PlantVillage + fold web data
+    ├── kd.py               # multi-teacher soft targets + DIST relational loss + attention-transfer feature loss
+    ├── train_teacher.py    # fine-tune a timm backbone (ConvNeXt/EfficientNet) into a KD teacher
+    ├── train_fpga.py       # ONE-SHOT: GPU-cached train + KD + adaptive-BN + INT8 PTQ + INT8 QAT + summary
+    ├── distill.py          # standalone PlantVillage-pretrain / multi-teacher-distill (finer control)
+    ├── quantize_qat.py     # Brevitas INT8 QAT (per-channel sym weights) + QONNX export path
+    ├── ptq.py              # INT8 PTQ ablation: CLE + bias-correction + AdaRound
+    ├── export_onnx.py      # QONNX (FINN) / ONNX (hls4ml) export + PyTorch↔ONNX parity check
+    ├── predict.py          # run any checkpoint (FP32 / INT8-PTQ / INT8-QAT) on images, report accuracy + grid
+    ├── finn_build.py       # FINN dataflow build config for xc7a200tfbg484-2  (run inside FINN Docker)
+    ├── hls4ml_build.py     # hls4ml build config for xc7a200tfbg484-2       (needs Vitis HLS)
+    ├── eval_common.py      # shared loaders/metrics for the standalone ptq.py / quantize_qat.py mains
+    └── requirements-fpga.txt
 ```
 
 ---
@@ -207,98 +215,35 @@ python run_random_tests.py --num-images 10
 
 ---
 
-## 🧪 7. Reproduce Part B (sub-100K INT8 FPGA model) — canonical runbook
+## 🧪 7. Reproduce Part B (sub-100K INT8 FPGA model)
 
-All commands from the repo root, using `.venv-1`. Windows PowerShell shown; on Linux swap
-`\`\`` line-continuation for `\` and `.\.venv-1\Scripts\python.exe` for `.venv-1/bin/python`.
+The full runbook lives in **[`PlantEdgeNet-FPGA/README.md`](PlantEdgeNet-FPGA/README.md)**. At a glance
+(run every command from this repo root, using `.venv-1`):
 
-### Step 0 — deps
+| Step | Script | What |
+|---|---|---|
+| 0 | `pip install timm brevitas qonnx onnx onnxruntime` | optional deps (teachers, QAT, export) |
+| 1 | `PlantEdgeNet-FPGA/fpga/prepare_data.py` | leaf-ROI crop → `PlantDoc-Cropped/` (`--plantvillage` / `--web` fold extra **train** data; test stays PlantDoc) |
+| 2 | `PlantEdgeNet-FPGA/fpga/train_teacher.py` | *(optional)* fine-tune ConvNeXt / EfficientNet teachers |
+| 3 | `PlantEdgeNet-FPGA/fpga/train_fpga.py` | one shot: GPU-cached train + multi-teacher KD (soft + DIST + attention transfer) + EMA + adaptive-BN + INT8 **PTQ** + INT8 **QAT** → ships the better |
+| 4 | `PlantEdgeNet-FPGA/fpga/predict.py` | run FP32 / INT8-PTQ / INT8-QAT checkpoints on images, report accuracy + grid |
+| 5 | `PlantEdgeNet-FPGA/fpga/export_onnx.py` | QONNX (FINN) / ONNX (hls4ml) + PyTorch↔ONNX parity check |
+| 6 | `PlantEdgeNet-FPGA/fpga/{finn_build,hls4ml_build}.py` | Vivado build for `xc7a200tfbg484-2`; then on-board eval on the 236 test images |
+
+Recommended Step 3 (DINOv2 teacher only, no timm needed):
 ```powershell
-.\.venv-1\Scripts\python.exe -m pip install timm brevitas qonnx onnx onnxruntime
+.\.venv-1\Scripts\python.exe PlantEdgeNet-FPGA\fpga\train_fpga.py --data-dir PlantDoc-Cropped `
+  --width 1.5 --se --img-size 96 --epochs 200 --iters-per-epoch 120 --mixup `
+  --teachers checkpoints_sota\dinov2_vits14_best.pth --adabn-batches 50 --qat
 ```
+Outputs: `PlantEdgeNet-FPGA/fpga/checkpoints_fpga/plantedgenet_w1.5_{fp32,int8_ptq,int8_qat}.pth`,
+`results_fpga/plantedgenet_w1.5_summary.json` (`params`, `macs`, `fp32`, `int8_ptq`, `int8_qat`,
+`shipped`, `shipped_acc`, `int8_gap_pp`), confusion-matrix PNGs.
 
-### Step 1 — build the cropped corpus  (`prepare_data.py` + `leaf_roi.py`)
-```powershell
-# leaf-ROI crop of PlantDoc; test = PlantDoc test only (honest eval)
-.\.venv-1\Scripts\python.exe fpga\prepare_data.py --src PlantDoc-Dataset --dst PlantDoc-Cropped --size 160
-
-# OPTIONAL extra training data (only if you have the folders; test stays PlantDoc):
-#   ... --dst PlantDoc-Cropped-Plus --plantvillage "<PlantVillage root or its train/ subdir>" --web <web_root>
-#   PlantVillage: Kaggle "New Plant Diseases Dataset" -> point --plantvillage at its 38-class folder
-# BASELINE without crop:  ... --dst PlantDoc-Raw --no-crop
-```
-Preview the crop: `python fpga\leaf_roi.py --in "PlantDoc-Dataset\test\Tomato leaf" --grid --out roi_preview`
-
-### Step 2 — (optional) build KD teachers  (`train_teacher.py`)
-A **bare timm name** as `--teachers` is wrong (random 28-class head → noise soft labels). Fine-tune real
-teachers first (each ~20–40 min on an RTX 3050), or skip and use the existing DINOv2 checkpoint alone.
-```powershell
-.\.venv-1\Scripts\python.exe fpga\train_teacher.py --arch convnext_tiny.fb_in22k_ft_in1k --data-dir PlantDoc-Cropped --img-size 224 --epochs 40 --mixup
-.\.venv-1\Scripts\python.exe fpga\train_teacher.py --arch efficientnet_b3               --data-dir PlantDoc-Cropped --img-size 288 --epochs 40 --mixup
-# -> checkpoints_sota/convnext_tiny_fb_in22k_ft_in1k_best.pth , checkpoints_sota/efficientnet_b3_best.pth
-```
-
-### Step 3 — train + INT8  (`train_fpga.py`, one shot: GPU-cached, GPU-augmented, progress bars)
-```powershell
-# full: 3 teachers (needs Step 2) + DIST + attention-transfer + adaptive-BN + QAT
-.\.venv-1\Scripts\python.exe fpga\train_fpga.py `
-  --data-dir PlantDoc-Cropped --width 1.5 --se --img-size 96 `
-  --epochs 200 --batch-size 128 --iters-per-epoch 120 --mixup `
-  --teachers checkpoints_sota\dinov2_vits14_best.pth checkpoints_sota\convnext_tiny_fb_in22k_ft_in1k_best.pth checkpoints_sota\efficientnet_b3_best.pth `
-  --kd-beta 1.0 --feat-kd 0.5 --adabn-batches 50 --qat --calib-images 256
-
-# minimal: DINOv2 teacher only (skip Step 2)
-.\.venv-1\Scripts\python.exe fpga\train_fpga.py --data-dir PlantDoc-Cropped --width 1.5 --se --img-size 96 `
-  --epochs 200 --iters-per-epoch 120 --mixup --teachers checkpoints_sota\dinov2_vits14_best.pth --adabn-batches 50 --qat
-```
-What it does, in order: RAM-cache the dataset (pinned uint8) → GPU augmentation (`transforms.v2`,
-channels_last + cudnn.benchmark + TF32 + bf16) → train PlantEdgeNet with multi-teacher KD (averaged soft
-targets + `--kd-beta` DIST relational loss + `--feat-kd` attention transfer) + EMA (warmup decay) →
-**adaptive-BatchNorm** recalibration on target data (kept only if it helps) → **INT8 PTQ**
-(BN-folded, per-output-channel symmetric weights, 99.9-percentile activation calibration) →
-**INT8 QAT** with Brevitas → **ships whichever of QAT / PTQ scores higher**.
-
-Outputs:
-* `fpga/checkpoints_fpga/plantedgenet_w1.5_{fp32,int8_ptq,int8_qat}.pth`
-* `results_fpga/plantedgenet_w1.5_summary.json` — has `params`, `macs`, `fp32`, `int8_ptq`, `int8_qat`,
-  `shipped`, `shipped_acc`, `int8_gap_pp`
-* `results_fpga/plantedgenet_w1.5_{fp32,int8_ptq}_confusion_matrix.png`
-
-Knobs: `--width 1.75` (~95 K params, still < 100 K) · `--aug-strength {none,light,strong}` ·
-`--iters-per-epoch` (updates/epoch, decoupled from batch size) · `--batch-size 512` for higher GPU
-utilisation · `--export-onnx`.
-
-### Step 4 — test images  (`predict.py`)
-```powershell
-.\.venv-1\Scripts\python.exe fpga\predict.py `
-  --ckpt fpga\checkpoints_fpga\plantedgenet_w1.5_int8_qat.pth `
-  --images "PlantDoc-Cropped\test" --score --tta --grid results_fpga\preds_grid.png
-# also accepts explicit files/globs and a --topk N per-image breakdown
-```
-
-### Step 5 — export for the FPGA toolchain  (`export_onnx.py`)
-```powershell
-.\.venv-1\Scripts\python.exe fpga\export_onnx.py --ckpt fpga\checkpoints_fpga\plantedgenet_w1.5_int8_qat.pth --format qonnx   # FINN
-.\.venv-1\Scripts\python.exe fpga\export_onnx.py --ckpt fpga\checkpoints_fpga\plantedgenet_w1.5_int8_ptq.pth --format onnx --check   # hls4ml + parity
-```
-
-### Step 6 — FPGA build (Vivado)
-* **FINN:** inside the FINN Docker image, `python fpga/finn_build.py` → stitched IP + OOC synth report;
-  open the Vivado project (`xc7a200tfbg484-2`), add MicroBlaze + AXI-DMA (or JTAG-to-AXI), implement,
-  close timing at ≥ 100 MHz, generate the bitstream.
-* **hls4ml (cross-check / fallback):** with Vitis HLS on PATH, `python fpga/hls4ml_build.py`.
-* **On-board eval:** push the 236 PlantDoc test images through the bitstream, rebuild the confusion
-  matrix, and confirm it matches the software INT8 model within rounding.
-
-### Acceptance criteria (from `research/IMPLEMENTATION_PLAN.md`)
-| # | Criterion |
-|---|---|
-| A1 | student parameter count **< 100,000** (asserted in `model_tiny.py`) |
-| A2 | FP32 student PlantDoc test top-1 **≥ 62 %** (stretch ≥ 80 %) |
-| A3 | shipped INT8 within **≤ 1.5 %** of FP32 |
-| A4 | ONNX / QONNX argmax agreement **= 100 %** on the test set |
-| A5 | fits `xc7a200tfbg484-2`: DSP ≤ 700, BRAM ≤ 360, LUT ≤ 130 k, timing met ≥ 100 MHz |
-| A6 | on-board predictions match software INT8 within rounding |
+**Acceptance criteria** (full list in `PlantEdgeNet-FPGA/research/IMPLEMENTATION_PLAN.md`):
+params < 100 000 · FP32 test ≥ 62 % (stretch ≥ 80 %) · shipped INT8 within ≤ 1.5 % of FP32 ·
+ONNX/QONNX argmax agreement = 100 % · fits `xc7a200tfbg484-2` (DSP ≤ 700, BRAM ≤ 360, LUT ≤ 130 k,
+timing met ≥ 100 MHz) · on-board predictions match software INT8.
 
 ---
 
@@ -307,7 +252,7 @@ utilisation · `--export-onnx`.
 * **PlantDoc classification:** 28 classes, 2 336 train / 236 test, in-the-wild. Noisy, class-imbalanced —
   the biggest accuracy lever is **data + leaf-ROI cropping**, not the last bits of quantization.
 * **PlantDoc-Object-Detection:** Pascal-VOC boxes; `voc_to_yolo.py` converts to YOLO format.
-* All large artifacts (datasets, `*.pth`, venvs, `PlantDoc-Cropped*/`, `fpga/checkpoints_fpga/`,
+* All large artifacts (datasets, `*.pth`, venvs, `PlantDoc-Cropped*/`, `checkpoints_fpga/`,
   `results_fpga/`) are git-ignored — regenerate them with the runbooks above.
 
 ---

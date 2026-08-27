@@ -102,10 +102,11 @@ python benchmark.py --checkpoint checkpoints/plantedge_w1.00_best.pth --data-dir
 
 ---
 
-## 📊 Summary of Model Parameters
+## 📊 Summary of Model Parameters (Target: 100K ± 10%)
 
-| Configuration | Parameters | MACs (@ 96px) | FP32 Size | INT8 Size | FPGA Budget Status |
+| Configuration | Parameters | MACs (@ 96px) | FP32 Size | INT8 Size | FPGA Budget Status ($<100\text{K}$) |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| `w = 0.75` | ~32,000 | ~4.5 M | 128 KB | 32 KB | ✅ Compatible |
-| **`w = 1.00` (Default)** | **~54,860** | **~7.8 M** | **219 KB** | **55 KB** | **✅ Recommended** |
-| `w = 1.25` | ~85,200 | ~12.2 M | 340 KB | 85 KB | ✅ Max Accuracy (<100K) |
+| `w = 0.75` | **61,582** | 14.64 M | 240.5 KB | 60.1 KB | ✅ Compatible |
+| `w = 0.95` | **90,574** | 18.92 M | 353.8 KB | 88.5 KB | ✅ Compatible ($100\text{K} - 9.4\%$) |
+| **`w = 1.00` (Default)** | **99,054** | **20.33 M** | **386.9 KB** | **96.7 KB** | **✅ Exact Target ($100\text{K} - 0.95\%$)** |
+| `w = 1.05` | **107,454** | 22.15 M | 419.7 KB | 104.9 KB | ✅ Compatible ($100\text{K} + 7.4\%$) |

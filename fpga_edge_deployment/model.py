@@ -117,12 +117,12 @@ class PlantEdgeNet(nn.Module):
                 new_v += divisor
             return new_v
 
-        # Base channel configuration (Strictly tuned for <100K parameters)
+        # Base channel configuration (Strictly calibrated for ~99K-100K parameters)
         c_stem = _make_divisible(16 * width_mult)
         c1 = _make_divisible(24 * width_mult)
         c2 = _make_divisible(32 * width_mult)
         c3 = _make_divisible(48 * width_mult)
-        c4 = _make_divisible(64 * width_mult)
+        c4 = _make_divisible(72 * width_mult)
         c5 = _make_divisible(96 * width_mult)
         c6 = _make_divisible(128 * width_mult)
 

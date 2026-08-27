@@ -9,7 +9,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from torch.optim.lr_scheduler import CosineAnnealingLR
+from torch.optim.lr_scheduler import CosineAnnealingWarmRestarts
 from tqdm import tqdm
 from torchvision import models
 
@@ -30,15 +30,17 @@ def parse_args():
     parser = argparse.ArgumentParser(description="High-Accuracy Knowledge Distillation & Training for PlantEdgeNet")
     parser.add_argument("--data-dir", type=str, default="PlantDoc-Dataset", help="Path to dataset root directory")
     parser.add_argument("--arch-type", type=str, default="inverted_residual", choices=["inverted_residual", "depthwise_separable"], help="Architecture type")
-    parser.add_argument("--width-mult", type=float, default=1.0, help="Width multiplier (0.75=~58K, 1.0=~94K)")
+    parser.add_argument("--width-mult", type=float, default=1.0, help="Width multiplier (0.75=~61K, 1.0=~99K, 1.05=~107K)")
     parser.add_argument("--img-size", type=int, default=96, help="Input image resolution (96x96 recommended)")
-    parser.add_argument("--epochs", type=int, default=60, help="Number of training epochs")
+    parser.add_argument("--epochs", type=int, default=300, help="Maximum number of training epochs")
+    parser.add_argument("--target-acc", type=float, default=0.95, help="Target validation accuracy threshold to stop training (e.g. 0.85 or 0.95)")
+    parser.add_argument("--patience", type=int, default=50, help="Early stopping patience (epochs without validation improvement)")
     parser.add_argument("--batch-size", type=int, default=32, help="Batch size")
     parser.add_argument("--lr", type=float, default=1e-3, help="Peak learning rate for AdamW")
     parser.add_argument("--weight-decay", type=float, default=1e-4, help="Weight decay")
     parser.add_argument("--label-smoothing", type=float, default=0.1, help="Label smoothing epsilon")
     parser.add_argument("--mixup-prob", type=float, default=0.3, help="Probability of applying MixUp augmentation")
-    parser.add_argument("--teacher-weights", type=str, default=None, help="Path to teacher checkpoint for Knowledge Distillation (e.g. checkpoints_sota/dinov2_vits14_best.pth)")
+    parser.add_argument("--teacher-weights", type=str, default="checkpoints_sota/dinov2_vits14_best.pth", help="Path to teacher checkpoint for Knowledge Distillation (e.g. checkpoints_sota/dinov2_vits14_best.pth)")
     parser.add_argument("--kd-temp", type=float, default=4.0, help="Distillation temperature (higher = softer targets)")
     parser.add_argument("--kd-alpha", type=float, default=0.6, help="Weight of distillation loss vs hard target CE loss")
     parser.add_argument("--use-hsv-roi", action="store_true", default=True, help="Extract leaf ROI to remove background")
@@ -70,7 +72,6 @@ class TeacherWrapper(nn.Module):
                 from src.sota.models_sota import get_sota_model
                 self.teacher = get_sota_model(arch="dinov2_vits14", num_classes=num_classes)
             except Exception:
-                # Fallback direct hub load
                 from models_sota import get_sota_model
                 self.teacher = get_sota_model(arch="dinov2_vits14", num_classes=num_classes)
             
@@ -196,7 +197,8 @@ def main():
     print("PlantEdgeNet: SOTA Edge Training & Knowledge Distillation")
     print(f"Architecture: {args.arch_type} | Width Multiplier: {args.width_mult}")
     print(f"Input Resolution: {args.img_size}x{args.img_size} | Device: {device}")
-    print(f"Epochs: {args.epochs} | Batch Size: {args.batch_size} | LR: {args.lr}")
+    print(f"Max Epochs: {args.epochs} | Target Accuracy: {args.target_acc*100:.1f}% | Patience: {args.patience}")
+    print(f"Batch Size: {args.batch_size} | LR: {args.lr}")
     print(f"Teacher Distillation: {args.teacher_weights or 'None (From Scratch)'}")
     print("==================================================")
 
@@ -209,7 +211,7 @@ def main():
     )
     num_classes = len(class_names)
 
-    # 2. Build Model
+    # 2. Build Model (~99K parameters at width_mult=1.0)
     model = get_plantedge_model(
         num_classes=num_classes,
         width_mult=args.width_mult,
@@ -231,14 +233,18 @@ def main():
         )
         print("Teacher-Student Knowledge Distillation active!\n")
 
-    # 4. Optimization Setup
+    # 4. Optimization Setup with Warm Restarts for Deep Convergence
     criterion = nn.CrossEntropyLoss(label_smoothing=args.label_smoothing)
     optimizer = optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
-    scheduler = CosineAnnealingLR(optimizer, T_max=args.epochs, eta_min=1e-5)
+    scheduler = CosineAnnealingWarmRestarts(optimizer, T_0=25, T_mult=2, eta_min=1e-5)
 
     best_acc = -1.0
     best_ckpt_path = os.path.join(save_dir, f"plantedge_w{args.width_mult:.2f}_best.pth")
     last_ckpt_path = os.path.join(save_dir, f"plantedge_w{args.width_mult:.2f}_latest.pth")
+    target_ckpt_path = os.path.join(save_dir, f"plantedge_w{args.width_mult:.2f}_target_reached.pth")
+
+    epochs_without_improvement = 0
+    target_reached = False
 
     start_time = time.time()
     for epoch in range(1, args.epochs + 1):
@@ -254,6 +260,7 @@ def main():
             mixup_prob=args.mixup_prob
         )
         val_loss, val_acc = evaluate(model, test_loader, criterion, device)
+        current_lr = optimizer.param_groups[0]['lr']
         scheduler.step()
 
         save_dict = {
@@ -270,22 +277,43 @@ def main():
             "macs": macs
         }
 
-        # Always save latest
+        # Always save latest checkpoint
         torch.save(save_dict, last_ckpt_path)
 
-        is_best = val_acc >= best_acc
+        is_best = val_acc > best_acc
         if is_best:
             best_acc = val_acc
+            epochs_without_improvement = 0
             save_dict["best_accuracy"] = best_acc
             torch.save(save_dict, best_ckpt_path)
+            mark = "★ BEST"
+        else:
+            epochs_without_improvement += 1
+            mark = ""
 
-        mark = "★ BEST" if is_best else ""
-        print(f"Epoch [{epoch:03d}/{args.epochs:03d}] | Train Loss: {train_loss:.4f} | Train Acc: {train_acc*100:.2f}% | Val Loss: {val_loss:.4f} | Val Acc: {val_acc*100:.2f}% {mark}")
+        print(f"Epoch [{epoch:03d}/{args.epochs:03d}] | LR: {current_lr:.6f} | Train Loss: {train_loss:.4f} | Train Acc: {train_acc*100:.2f}% | Val Loss: {val_loss:.4f} | Val Acc: {val_acc*100:.2f}% [Target: {args.target_acc*100:.1f}%] {mark}")
+
+        # Check if Target Accuracy is reached
+        if val_acc >= args.target_acc:
+            target_reached = True
+            save_dict["target_accuracy_achieved"] = val_acc
+            torch.save(save_dict, target_ckpt_path)
+            print("\n" + "="*70)
+            print(f"🎯 TARGET ACCURACY ACHIEVED! Reached {val_acc*100:.2f}% (Target: {args.target_acc*100:.1f}%) at Epoch {epoch}!")
+            print(f"Target checkpoint saved to: {target_ckpt_path}")
+            print("="*70 + "\n")
+            break
+
+        # Check Early Stopping
+        if epochs_without_improvement >= args.patience and epoch >= 60:
+            print(f"\n[Early Stopping Triggered] No validation improvement for {args.patience} epochs.")
+            break
 
     total_time = time.time() - start_time
     print("\n==================================================")
-    print(f"Training Complete in {total_time/60:.2f} minutes!")
+    print(f"Training Run Finished in {total_time/60:.2f} minutes!")
     print(f"Peak Validation Accuracy: {best_acc*100:.2f}%")
+    print(f"Target Accuracy ({args.target_acc*100:.1f}%): {'✅ REACHED' if target_reached else '⚠️ NOT REACHED (Best saved)'}")
     print(f"Best Model Weights Saved to: {best_ckpt_path}")
     print("==================================================")
 

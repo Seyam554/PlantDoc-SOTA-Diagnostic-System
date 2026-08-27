@@ -161,7 +161,14 @@ def benchmark_model(checkpoint_path, data_dir="PlantDoc-Dataset", batch_size=32,
     print(f"\nSaved Confusion Matrix Plot to: {cm_path}")
 
     # 7. Save JSON Metrics
-    clf_report = classification_report(all_targets, all_preds, target_names=classes, output_dict=True, zero_division=0)
+    clf_report = classification_report(
+        all_targets,
+        all_preds,
+        labels=list(range(len(classes))),
+        target_names=classes,
+        output_dict=True,
+        zero_division=0
+    )
     summary_data = {
         "model_architecture": "PlantEdgeNet",
         "parameters": total_params,

@@ -1,0 +1,139 @@
+{
+  "run_folder": "run_1",
+  "run_directory": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\fpga_edge_deployment\\outputs\\run_1",
+  "timestamp": "2026-08-27T22:16:03.841376",
+  "checkpoint": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\fpga_edge_deployment\\checkpoints\\plantedge_w1.00_best.pth",
+  "total_images_processed": 5,
+  "results": [
+    {
+      "image_file": "vaccinium-angustifolium-low-bush-blueberry_0830_124221.jpg",
+      "source_path": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\PlantDoc-Dataset\\test\\Blueberry leaf\\vaccinium-angustifolium-low-bush-blueberry_0830_124221.jpg",
+      "primary_diagnosis": "Bell_pepper leaf",
+      "primary_confidence": "23.46%",
+      "confidence_value": 0.2345559448003769,
+      "is_healthy": true,
+      "top_3_predictions": [
+        {
+          "class_name": "Bell_pepper leaf",
+          "confidence": 0.2345559448003769,
+          "confidence_percent": "23.46%"
+        },
+        {
+          "class_name": "Raspberry leaf",
+          "confidence": 0.11208392679691315,
+          "confidence_percent": "11.21%"
+        },
+        {
+          "class_name": "Blueberry leaf",
+          "confidence": 0.0854310393333435,
+          "confidence_percent": "8.54%"
+        }
+      ],
+      "annotated_image": "diagnosed_vaccinium-angustifolium-low-bush-blueberry_0830_124221.jpg"
+    },
+    {
+      "image_file": "strawberry-leaves-collection-white-background-36684676.jpg",
+      "source_path": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\PlantDoc-Dataset\\test\\Strawberry leaf\\strawberry-leaves-collection-white-background-36684676.jpg",
+      "primary_diagnosis": "Strawberry leaf",
+      "primary_confidence": "37.30%",
+      "confidence_value": 0.37295636534690857,
+      "is_healthy": true,
+      "top_3_predictions": [
+        {
+          "class_name": "Strawberry leaf",
+          "confidence": 0.37295636534690857,
+          "confidence_percent": "37.30%"
+        },
+        {
+          "class_name": "grape leaf",
+          "confidence": 0.3202747404575348,
+          "confidence_percent": "32.03%"
+        },
+        {
+          "class_name": "Raspberry leaf",
+          "confidence": 0.10918503999710083,
+          "confidence_percent": "10.92%"
+        }
+      ],
+      "annotated_image": "diagnosed_strawberry-leaves-collection-white-background-36684676.jpg"
+    },
+    {
+      "image_file": "20180511_091133-24l1vhg-e1526047988236.jpg",
+      "source_path": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\PlantDoc-Dataset\\test\\Apple leaf\\20180511_091133-24l1vhg-e1526047988236.jpg",
+      "primary_diagnosis": "Bell_pepper leaf",
+      "primary_confidence": "12.68%",
+      "confidence_value": 0.12676872313022614,
+      "is_healthy": true,
+      "top_3_predictions": [
+        {
+          "class_name": "Bell_pepper leaf",
+          "confidence": 0.12676872313022614,
+          "confidence_percent": "12.68%"
+        },
+        {
+          "class_name": "Soyabean leaf",
+          "confidence": 0.09234966337680817,
+          "confidence_percent": "9.23%"
+        },
+        {
+          "class_name": "Corn leaf blight",
+          "confidence": 0.09162931889295578,
+          "confidence_percent": "9.16%"
+        }
+      ],
+      "annotated_image": "diagnosed_20180511_091133-24l1vhg-e1526047988236.jpg"
+    },
+    {
+      "image_file": "4825902504_5fa80b65b8_z.jpg",
+      "source_path": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\PlantDoc-Dataset\\test\\Bell_pepper leaf\\4825902504_5fa80b65b8_z.jpg",
+      "primary_diagnosis": "Apple leaf",
+      "primary_confidence": "60.81%",
+      "confidence_value": 0.608106791973114,
+      "is_healthy": true,
+      "top_3_predictions": [
+        {
+          "class_name": "Apple leaf",
+          "confidence": 0.608106791973114,
+          "confidence_percent": "60.81%"
+        },
+        {
+          "class_name": "grape leaf",
+          "confidence": 0.10800522565841675,
+          "confidence_percent": "10.80%"
+        },
+        {
+          "class_name": "Cherry leaf",
+          "confidence": 0.09964792430400848,
+          "confidence_percent": "9.96%"
+        }
+      ],
+      "annotated_image": "diagnosed_4825902504_5fa80b65b8_z.jpg"
+    },
+    {
+      "image_file": "peach-leaf-10223898.jpg",
+      "source_path": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\PlantDoc-Dataset\\test\\Peach leaf\\peach-leaf-10223898.jpg",
+      "primary_diagnosis": "Peach leaf",
+      "primary_confidence": "74.74%",
+      "confidence_value": 0.7473567724227905,
+      "is_healthy": true,
+      "top_3_predictions": [
+        {
+          "class_name": "Peach leaf",
+          "confidence": 0.7473567724227905,
+          "confidence_percent": "74.74%"
+        },
+        {
+          "class_name": "Apple leaf",
+          "confidence": 0.07808884978294373,
+          "confidence_percent": "7.81%"
+        },
+        {
+          "class_name": "Blueberry leaf",
+          "confidence": 0.06493218243122101,
+          "confidence_percent": "6.49%"
+        }
+      ],
+      "annotated_image": "diagnosed_peach-leaf-10223898.jpg"
+    }
+  ]
+}

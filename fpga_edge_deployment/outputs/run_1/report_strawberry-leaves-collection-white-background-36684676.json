@@ -1,0 +1,26 @@
+{
+  "image_file": "strawberry-leaves-collection-white-background-36684676.jpg",
+  "source_path": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\PlantDoc-Dataset\\test\\Strawberry leaf\\strawberry-leaves-collection-white-background-36684676.jpg",
+  "primary_diagnosis": "Strawberry leaf",
+  "primary_confidence": "37.30%",
+  "confidence_value": 0.37295636534690857,
+  "is_healthy": true,
+  "top_3_predictions": [
+    {
+      "class_name": "Strawberry leaf",
+      "confidence": 0.37295636534690857,
+      "confidence_percent": "37.30%"
+    },
+    {
+      "class_name": "grape leaf",
+      "confidence": 0.3202747404575348,
+      "confidence_percent": "32.03%"
+    },
+    {
+      "class_name": "Raspberry leaf",
+      "confidence": 0.10918503999710083,
+      "confidence_percent": "10.92%"
+    }
+  ],
+  "annotated_image": "diagnosed_strawberry-leaves-collection-white-background-36684676.jpg"
+}

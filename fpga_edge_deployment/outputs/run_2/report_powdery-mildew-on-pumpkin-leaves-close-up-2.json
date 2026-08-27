@@ -1,0 +1,26 @@
+{
+  "image_file": "powdery-mildew-on-pumpkin-leaves-close-up-2.jpg",
+  "source_path": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\PlantDoc-Dataset\\test\\Squash Powdery mildew leaf\\powdery-mildew-on-pumpkin-leaves-close-up-2.jpg",
+  "primary_diagnosis": "Squash Powdery mildew leaf",
+  "primary_confidence": "99.86%",
+  "confidence_value": 0.9985538125038147,
+  "is_healthy": true,
+  "top_3_predictions": [
+    {
+      "class_name": "Squash Powdery mildew leaf",
+      "confidence": 0.9985538125038147,
+      "confidence_percent": "99.86%"
+    },
+    {
+      "class_name": "Strawberry leaf",
+      "confidence": 0.00023088339366950095,
+      "confidence_percent": "0.02%"
+    },
+    {
+      "class_name": "Bell_pepper leaf",
+      "confidence": 0.0001486242254031822,
+      "confidence_percent": "0.01%"
+    }
+  ],
+  "annotated_image": "diagnosed_powdery-mildew-on-pumpkin-leaves-close-up-2.jpg"
+}

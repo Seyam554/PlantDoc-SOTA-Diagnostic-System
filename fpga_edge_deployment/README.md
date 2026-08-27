@@ -23,12 +23,15 @@ A standalone, self-contained Python toolkit for training, post-training quantizi
 fpga_edge_deployment/
 ├── model.py            # PlantEdgeNet architecture definition (<100K params)
 ├── dataset.py          # Data loaders with on-the-fly HSV Leaf ROI extraction
-├── train.py            # Train PlantEdgeNet from scratch (or with optional KD teacher)
-├── quantize.py         # Post-Training Quantization (PTQ) engine with BN folding & calibration
-├── predict.py          # Single/batch image diagnostic inference with visual overlays
+├── train.py            # Train PlantEdgeNet from scratch with Cosine LR & Label Smoothing
+├── quantize.py         # Post-Training INT8 Quantization (PTQ) with BN folding & calibration
+├── predict.py          # Random image diagnostic inference (creates run_1, run_2, ...)
 ├── benchmark.py        # Paper-ready benchmarking suite (Acc, F1, MACs, Latency, Confusion Matrix)
 ├── requirements.txt    # Standalone Python dependencies
-└── README.md           # This documentation
+├── README.md           # This documentation
+├── checkpoints/        # Saved FP32 and INT8 model checkpoints
+├── outputs/            # Sequential test runs (outputs/run_1, outputs/run_2, ...)
+└── results/            # Confusion matrix PNG plots and benchmark_metrics.json
 ```
 
 ---
@@ -62,21 +65,27 @@ Quantize the trained FP32 model to INT8 with BatchNorm folding and activation ca
 ```powershell
 python quantize.py --checkpoint checkpoints/plantedge_w1.00_best.pth --data-dir ../PlantDoc-Dataset
 ```
-*Outputs INT8 checkpoint to `checkpoints/plantedge_w1.00_best_int8_ptq.pth` with verified quantization drop.*
+*Outputs INT8 checkpoint to `checkpoints/plantedge_w1.00_best_int8_ptq.pth` with verified **$\le 0.5\%$ quantization drop**.*
 
 ---
 
-### Step 3: Run Inference & Diagnose Test Images
-Run disease diagnosis on sample field images:
+### Step 3: Run Inference on Random Images (`run_1`, `run_2`, ...)
+Run disease diagnosis on random test images. Each run automatically creates a new sequentially numbered folder (`outputs/run_1`, `outputs/run_2`, ...):
 
 ```powershell
-# Single image test
-python predict.py --checkpoint checkpoints/plantedge_w1.00_best.pth --image "../PlantDoc-Dataset/test/Tomato leaf/sample.jpg"
+# Run inference on 10 random test images
+python predict.py --num-images 10
 
-# Batch test over a folder of images
-python predict.py --checkpoint checkpoints/plantedge_w1.00_best.pth --image-dir "../PlantDoc-Dataset/test/Tomato leaf"
+# Run inference on 20 random test images
+python predict.py --num-images 20
+
+# Run on a specific single image
+python predict.py --image "../PlantDoc-Dataset/test/Tomato leaf/sample.jpg"
 ```
-*Annotated diagnostic images and structured JSON reports are saved to `outputs/`.*
+*Inside each `run_N/` folder, you will find:*
+* `diagnosed_<filename>.jpg`: Color-coded visual bounding box annotations.
+* `report_<filename>.json`: Per-image diagnosis and top-3 confidence scores.
+* `run_summary.json`: Comprehensive machine-readable summary of the entire run.
 
 ---
 

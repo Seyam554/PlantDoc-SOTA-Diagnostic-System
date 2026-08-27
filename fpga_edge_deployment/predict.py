@@ -1,8 +1,11 @@
 import os
 import sys
+import re
 import glob
 import json
+import random
 import argparse
+from datetime import datetime
 from PIL import Image, ImageDraw, ImageFont
 import torch
 from torchvision import transforms
@@ -31,13 +34,36 @@ def resolve_file_path(p):
         return os.path.abspath(candidate3)
     return p
 
+def get_next_run_dir(base_output_dir):
+    """
+    Finds existing run_1, run_2, ... in base_output_dir and returns the next folder path (e.g. run_3).
+    """
+    os.makedirs(base_output_dir, exist_ok=True)
+    existing_runs = []
+    
+    for item in os.listdir(base_output_dir):
+        item_path = os.path.join(base_output_dir, item)
+        if os.path.isdir(item_path):
+            match = re.match(r"^run_(\d+)$", item, re.IGNORECASE)
+            if match:
+                existing_runs.append(int(match.group(1)))
+
+    next_num = max(existing_runs, default=0) + 1
+    run_folder_name = f"run_{next_num}"
+    run_dir = os.path.join(base_output_dir, run_folder_name)
+    os.makedirs(run_dir, exist_ok=True)
+    return run_dir, run_folder_name
+
 def parse_args():
-    parser = argparse.ArgumentParser(description="PlantEdgeNet Image Inference & Diagnosis")
-    parser.add_argument("--image", type=str, default=None, help="Path to single input image")
-    parser.add_argument("--image-dir", type=str, default=None, help="Path to directory of input images")
+    parser = argparse.ArgumentParser(description="PlantEdgeNet Random Image Inference & Diagnosis")
+    parser.add_argument("--image", type=str, default=None, help="Path to single input image (optional)")
+    parser.add_argument("--image-dir", type=str, default=None, help="Path to custom directory of images (optional)")
+    parser.add_argument("--data-dir", type=str, default="PlantDoc-Dataset", help="Path to dataset root for test image sampling")
+    parser.add_argument("--num-images", type=int, default=10, help="Number of random test images to sample per run")
     parser.add_argument("--checkpoint", type=str, default=os.path.join(_CURR_DIR, "checkpoints", "plantedge_w1.00_best.pth"), help="Path to model checkpoint (.pth)")
-    parser.add_argument("--output-dir", type=str, default=os.path.join(_CURR_DIR, "outputs"), help="Directory to save diagnosis outputs")
+    parser.add_argument("--output-base", type=str, default=os.path.join(_CURR_DIR, "outputs"), help="Base directory for run outputs (e.g. outputs/run_1, outputs/run_2)")
     parser.add_argument("--img-size", type=int, default=96, help="Model input resolution")
+    parser.add_argument("--seed", type=int, default=None, help="Optional random seed for reproducible sampling")
     parser.add_argument("--device", type=str, default="cuda" if torch.cuda.is_available() else "cpu", help="Device (cuda/cpu)")
     return parser.parse_args()
 
@@ -69,7 +95,12 @@ class PlantDoctorEdge:
     @torch.no_grad()
     def diagnose(self, image_path, output_dir="outputs"):
         os.makedirs(output_dir, exist_ok=True)
-        img_orig = Image.open(image_path).convert("RGB")
+        try:
+            img_orig = Image.open(image_path).convert("RGB")
+        except Exception as e:
+            print(f"Error opening image {image_path}: {e}")
+            return None
+
         w_orig, h_orig = img_orig.size
 
         # 1. Extract Leaf ROI
@@ -100,19 +131,20 @@ class PlantDoctorEdge:
         draw = ImageDraw.Draw(img_orig)
         label_text = f"{primary_pred['class_name']} ({primary_pred['confidence_percent']})"
         
-        # Border
         for offset in range(3):
             draw.rectangle([offset, offset, w_orig - offset, h_orig - offset], outline=color)
         draw.text((10, 10), label_text, fill=color)
 
-        clean_base = os.path.splitext(os.path.basename(image_path))[0]
+        clean_base = os.path.splitext(os.path.basename(image_path))[0].replace(" ", "_").replace("?", "_")
         annotated_path = os.path.join(output_dir, f"diagnosed_{clean_base}.jpg")
         img_orig.save(annotated_path, quality=95)
 
         report = {
             "image_file": os.path.basename(image_path),
+            "source_path": os.path.abspath(image_path),
             "primary_diagnosis": primary_pred["class_name"],
             "primary_confidence": primary_pred["confidence_percent"],
+            "confidence_value": primary_pred["confidence"],
             "is_healthy": is_healthy,
             "top_3_predictions": predictions,
             "annotated_image": os.path.basename(annotated_path)
@@ -126,38 +158,102 @@ class PlantDoctorEdge:
 
 def main():
     args = parse_args()
+    if args.seed is not None:
+        random.seed(args.seed)
+
+    # 1. Create sequential run folder: run_1, run_2, run_3, ...
+    base_output_dir = os.path.abspath(args.output_base)
+    run_dir, run_folder_name = get_next_run_dir(base_output_dir)
+
+    print("==================================================")
+    print("PlantEdgeNet: FPGA Diagnostic Inference Engine")
+    print(f"Created Execution Run: {run_folder_name}")
+    print(f"Output Directory: {run_dir}")
+    print(f"Device: {args.device}")
+    print("==================================================")
+
+    # 2. Gather candidate images
+    image_paths = []
+    if args.image:
+        if os.path.exists(args.image):
+            image_paths.append(args.image)
+        else:
+            print(f"Error: Specified image '{args.image}' not found!")
+            return
+    elif args.image_dir:
+        resolved_img_dir = resolve_file_path(args.image_dir)
+        if os.path.exists(resolved_img_dir):
+            for ext in ("*.jpg", "*.jpeg", "*.png", "*.JPG", "*.PNG"):
+                image_paths.extend(glob.glob(os.path.join(resolved_img_dir, ext)))
+        else:
+            print(f"Error: Specified image directory '{args.image_dir}' not found!")
+            return
+    else:
+        # Sample random test images from dataset test split
+        resolved_data_dir = resolve_file_path(args.data_dir)
+        test_dir = os.path.join(resolved_data_dir, "test")
+        
+        if not os.path.exists(test_dir):
+            # Check parent directory fallback
+            test_dir = os.path.join(_CURR_DIR, "..", "PlantDoc-Dataset", "test")
+
+        if os.path.exists(test_dir):
+            for ext in ("*.jpg", "*.jpeg", "*.png", "*.JPG", "*.PNG", "*.JPEG"):
+                image_paths.extend(glob.glob(os.path.join(test_dir, "*", ext)))
+        
+        if not image_paths:
+            # Fallback to any images in dataset
+            for ext in ("*.jpg", "*.jpeg", "*.png", "*.JPG", "*.PNG"):
+                image_paths.extend(glob.glob(os.path.join(resolved_data_dir, "**", ext), recursive=True))
+
+    if not image_paths:
+        print("Error: No test images found in dataset directories!")
+        return
+
+    # Randomly sample N images
+    num_to_sample = min(args.num_images, len(image_paths))
+    selected_images = random.sample(image_paths, num_to_sample) if not args.image else image_paths
+    print(f"Randomly selected {len(selected_images)} test images for this run from {len(image_paths)} total candidates.")
+
+    # 3. Load Model
     doctor = PlantDoctorEdge(
         checkpoint_path=args.checkpoint,
         img_size=args.img_size,
         device=args.device
     )
 
-    image_paths = []
-    if args.image:
-        image_paths.append(args.image)
-    elif args.image_dir:
-        for ext in ("*.jpg", "*.jpeg", "*.png", "*.JPG", "*.PNG"):
-            image_paths.extend(glob.glob(os.path.join(args.image_dir, ext)))
-    else:
-        # Check standard test images
-        image_paths = glob.glob("PlantDoc-Dataset/test/*/*.jpg")[:5]
-        if not image_paths:
-            image_paths = glob.glob("../PlantDoc-Dataset/test/*/*.jpg")[:5]
+    # 4. Execute Predictions
+    all_reports = []
+    print("\n" + "="*80)
+    print(f"{'#':<3} | {'Image File':<35} | {'Primary Diagnosis':<25} | {'Confidence':<12}")
+    print("="*80)
 
-    if not image_paths:
-        print("No test images found. Pass --image path/to/image.jpg")
-        return
+    for i, img_path in enumerate(selected_images, 1):
+        report = doctor.diagnose(img_path, output_dir=run_dir)
+        if report is not None:
+            all_reports.append(report)
+            filename = report["image_file"]
+            diagnosis = report["primary_diagnosis"]
+            conf = report["primary_confidence"]
+            print(f"{i:<3} | {filename[:33]:<35} | {diagnosis[:23]:<25} | {conf:<12}")
 
-    print("==================================================")
-    print("PlantEdgeNet: Diagnostic Inference on Test Images")
-    print(f"Total Images: {len(image_paths)} | Output: {args.output_dir}")
-    print("==================================================")
+    # 5. Save Comprehensive Run Summary JSON
+    summary_data = {
+        "run_folder": run_folder_name,
+        "run_directory": os.path.abspath(run_dir),
+        "timestamp": datetime.now().isoformat(),
+        "checkpoint": os.path.abspath(resolve_file_path(args.checkpoint)),
+        "total_images_processed": len(all_reports),
+        "results": all_reports
+    }
 
-    for i, p in enumerate(image_paths, 1):
-        report = doctor.diagnose(p, output_dir=args.output_dir)
-        print(f"[{i:02d}/{len(image_paths):02d}] {report['image_file'][:30]:<32} -> {report['primary_diagnosis']} ({report['primary_confidence']})")
+    summary_json_path = os.path.join(run_dir, "run_summary.json")
+    with open(summary_json_path, "w", encoding="utf-8") as f:
+        json.dump(summary_data, f, indent=2)
 
-    print("\nInference Complete! Reports saved to:", os.path.abspath(args.output_dir))
+    print("="*80)
+    print(f"\nAll {len(all_reports)} images diagnosed and saved to: {run_folder_name}")
+    print(f"Run Summary Report: {os.path.abspath(summary_json_path)}\n")
 
 if __name__ == "__main__":
     main()

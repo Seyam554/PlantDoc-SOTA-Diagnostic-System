@@ -1,0 +1,139 @@
+{
+  "run_folder": "run_2",
+  "run_directory": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\fpga_edge_deployment\\outputs\\run_2",
+  "timestamp": "2026-08-27T22:16:14.866083",
+  "checkpoint": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\fpga_edge_deployment\\checkpoints\\plantedge_w1.00_best.pth",
+  "total_images_processed": 5,
+  "results": [
+    {
+      "image_file": "powdery-mildew-erysiphe-plantani-on-young-sycamore-leaves-b774tm.jpg",
+      "source_path": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\PlantDoc-Dataset\\test\\Squash Powdery mildew leaf\\powdery-mildew-erysiphe-plantani-on-young-sycamore-leaves-b774tm.jpg",
+      "primary_diagnosis": "Tomato leaf bacterial spot",
+      "primary_confidence": "18.78%",
+      "confidence_value": 0.18778404593467712,
+      "is_healthy": false,
+      "top_3_predictions": [
+        {
+          "class_name": "Tomato leaf bacterial spot",
+          "confidence": 0.18778404593467712,
+          "confidence_percent": "18.78%"
+        },
+        {
+          "class_name": "Tomato leaf mosaic virus",
+          "confidence": 0.1396969109773636,
+          "confidence_percent": "13.97%"
+        },
+        {
+          "class_name": "Tomato mold leaf",
+          "confidence": 0.11598549783229828,
+          "confidence_percent": "11.60%"
+        }
+      ],
+      "annotated_image": "diagnosed_powdery-mildew-erysiphe-plantani-on-young-sycamore-leaves-b774tm.jpg"
+    },
+    {
+      "image_file": "powdery-mildew-on-pumpkin-leaves-close-up-2.jpg",
+      "source_path": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\PlantDoc-Dataset\\test\\Squash Powdery mildew leaf\\powdery-mildew-on-pumpkin-leaves-close-up-2.jpg",
+      "primary_diagnosis": "Squash Powdery mildew leaf",
+      "primary_confidence": "99.86%",
+      "confidence_value": 0.9985538125038147,
+      "is_healthy": true,
+      "top_3_predictions": [
+        {
+          "class_name": "Squash Powdery mildew leaf",
+          "confidence": 0.9985538125038147,
+          "confidence_percent": "99.86%"
+        },
+        {
+          "class_name": "Strawberry leaf",
+          "confidence": 0.00023088339366950095,
+          "confidence_percent": "0.02%"
+        },
+        {
+          "class_name": "Bell_pepper leaf",
+          "confidence": 0.0001486242254031822,
+          "confidence_percent": "0.01%"
+        }
+      ],
+      "annotated_image": "diagnosed_powdery-mildew-on-pumpkin-leaves-close-up-2.jpg"
+    },
+    {
+      "image_file": "Powdery-Mildew-on-squash.jpg",
+      "source_path": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\PlantDoc-Dataset\\test\\Squash Powdery mildew leaf\\Powdery-Mildew-on-squash.jpg",
+      "primary_diagnosis": "Squash Powdery mildew leaf",
+      "primary_confidence": "98.74%",
+      "confidence_value": 0.9873650670051575,
+      "is_healthy": true,
+      "top_3_predictions": [
+        {
+          "class_name": "Squash Powdery mildew leaf",
+          "confidence": 0.9873650670051575,
+          "confidence_percent": "98.74%"
+        },
+        {
+          "class_name": "Bell_pepper leaf",
+          "confidence": 0.0029018165078014135,
+          "confidence_percent": "0.29%"
+        },
+        {
+          "class_name": "Corn leaf blight",
+          "confidence": 0.002843441441655159,
+          "confidence_percent": "0.28%"
+        }
+      ],
+      "annotated_image": "diagnosed_Powdery-Mildew-on-squash.jpg"
+    },
+    {
+      "image_file": "dsc_8148cs.jpg",
+      "source_path": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\PlantDoc-Dataset\\test\\Tomato leaf late blight\\dsc_8148cs.jpg",
+      "primary_diagnosis": "Tomato leaf late blight",
+      "primary_confidence": "43.24%",
+      "confidence_value": 0.43240299820899963,
+      "is_healthy": false,
+      "top_3_predictions": [
+        {
+          "class_name": "Tomato leaf late blight",
+          "confidence": 0.43240299820899963,
+          "confidence_percent": "43.24%"
+        },
+        {
+          "class_name": "Potato leaf late blight",
+          "confidence": 0.12491967529058456,
+          "confidence_percent": "12.49%"
+        },
+        {
+          "class_name": "Tomato Early blight leaf",
+          "confidence": 0.11813350021839142,
+          "confidence_percent": "11.81%"
+        }
+      ],
+      "annotated_image": "diagnosed_dsc_8148cs.jpg"
+    },
+    {
+      "image_file": "wild-strawberry-leaf-top-view-rotated-KTBXCY.jpg",
+      "source_path": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\PlantDoc-Dataset\\test\\Strawberry leaf\\wild-strawberry-leaf-top-view-rotated-KTBXCY.jpg",
+      "primary_diagnosis": "Strawberry leaf",
+      "primary_confidence": "29.30%",
+      "confidence_value": 0.29295074939727783,
+      "is_healthy": true,
+      "top_3_predictions": [
+        {
+          "class_name": "Strawberry leaf",
+          "confidence": 0.29295074939727783,
+          "confidence_percent": "29.30%"
+        },
+        {
+          "class_name": "Apple leaf",
+          "confidence": 0.2284649908542633,
+          "confidence_percent": "22.85%"
+        },
+        {
+          "class_name": "Raspberry leaf",
+          "confidence": 0.1823301911354065,
+          "confidence_percent": "18.23%"
+        }
+      ],
+      "annotated_image": "diagnosed_wild-strawberry-leaf-top-view-rotated-KTBXCY.jpg"
+    }
+  ]
+}

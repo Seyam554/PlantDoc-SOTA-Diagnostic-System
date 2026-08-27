@@ -1,0 +1,26 @@
+{
+  "image_file": "vaccinium-angustifolium-low-bush-blueberry_0830_124221.jpg",
+  "source_path": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\PlantDoc-Dataset\\test\\Blueberry leaf\\vaccinium-angustifolium-low-bush-blueberry_0830_124221.jpg",
+  "primary_diagnosis": "Bell_pepper leaf",
+  "primary_confidence": "23.46%",
+  "confidence_value": 0.2345559448003769,
+  "is_healthy": true,
+  "top_3_predictions": [
+    {
+      "class_name": "Bell_pepper leaf",
+      "confidence": 0.2345559448003769,
+      "confidence_percent": "23.46%"
+    },
+    {
+      "class_name": "Raspberry leaf",
+      "confidence": 0.11208392679691315,
+      "confidence_percent": "11.21%"
+    },
+    {
+      "class_name": "Blueberry leaf",
+      "confidence": 0.0854310393333435,
+      "confidence_percent": "8.54%"
+    }
+  ],
+  "annotated_image": "diagnosed_vaccinium-angustifolium-low-bush-blueberry_0830_124221.jpg"
+}

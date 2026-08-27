@@ -1,7 +1,9 @@
 {
   "image_file": "20180511_091133-24l1vhg-e1526047988236.jpg",
+  "source_path": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\PlantDoc-Dataset\\test\\Apple leaf\\20180511_091133-24l1vhg-e1526047988236.jpg",
   "primary_diagnosis": "Bell_pepper leaf",
   "primary_confidence": "12.68%",
+  "confidence_value": 0.12676872313022614,
   "is_healthy": true,
   "top_3_predictions": [
     {

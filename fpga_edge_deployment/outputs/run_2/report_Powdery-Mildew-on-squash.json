@@ -1,0 +1,26 @@
+{
+  "image_file": "Powdery-Mildew-on-squash.jpg",
+  "source_path": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\PlantDoc-Dataset\\test\\Squash Powdery mildew leaf\\Powdery-Mildew-on-squash.jpg",
+  "primary_diagnosis": "Squash Powdery mildew leaf",
+  "primary_confidence": "98.74%",
+  "confidence_value": 0.9873650670051575,
+  "is_healthy": true,
+  "top_3_predictions": [
+    {
+      "class_name": "Squash Powdery mildew leaf",
+      "confidence": 0.9873650670051575,
+      "confidence_percent": "98.74%"
+    },
+    {
+      "class_name": "Bell_pepper leaf",
+      "confidence": 0.0029018165078014135,
+      "confidence_percent": "0.29%"
+    },
+    {
+      "class_name": "Corn leaf blight",
+      "confidence": 0.002843441441655159,
+      "confidence_percent": "0.28%"
+    }
+  ],
+  "annotated_image": "diagnosed_Powdery-Mildew-on-squash.jpg"
+}

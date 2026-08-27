@@ -1,0 +1,26 @@
+{
+  "image_file": "4825902504_5fa80b65b8_z.jpg",
+  "source_path": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\PlantDoc-Dataset\\test\\Bell_pepper leaf\\4825902504_5fa80b65b8_z.jpg",
+  "primary_diagnosis": "Apple leaf",
+  "primary_confidence": "60.81%",
+  "confidence_value": 0.608106791973114,
+  "is_healthy": true,
+  "top_3_predictions": [
+    {
+      "class_name": "Apple leaf",
+      "confidence": 0.608106791973114,
+      "confidence_percent": "60.81%"
+    },
+    {
+      "class_name": "grape leaf",
+      "confidence": 0.10800522565841675,
+      "confidence_percent": "10.80%"
+    },
+    {
+      "class_name": "Cherry leaf",
+      "confidence": 0.09964792430400848,
+      "confidence_percent": "9.96%"
+    }
+  ],
+  "annotated_image": "diagnosed_4825902504_5fa80b65b8_z.jpg"
+}

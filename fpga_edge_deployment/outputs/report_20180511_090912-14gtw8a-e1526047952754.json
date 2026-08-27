@@ -1,23 +1,23 @@
 {
   "image_file": "20180511_090912-14gtw8a-e1526047952754.jpg",
-  "primary_diagnosis": "Corn leaf blight",
-  "primary_confidence": "6.90%",
-  "is_healthy": false,
+  "primary_diagnosis": "Bell_pepper leaf",
+  "primary_confidence": "35.94%",
+  "is_healthy": true,
   "top_3_predictions": [
     {
-      "class_name": "Corn leaf blight",
-      "confidence": 0.06904681771993637,
-      "confidence_percent": "6.90%"
+      "class_name": "Bell_pepper leaf",
+      "confidence": 0.35936787724494934,
+      "confidence_percent": "35.94%"
     },
     {
-      "class_name": "Squash Powdery mildew leaf",
-      "confidence": 0.068760447204113,
-      "confidence_percent": "6.88%"
+      "class_name": "Cherry leaf",
+      "confidence": 0.1090175211429596,
+      "confidence_percent": "10.90%"
     },
     {
-      "class_name": "Tomato leaf late blight",
-      "confidence": 0.053626686334609985,
-      "confidence_percent": "5.36%"
+      "class_name": "Raspberry leaf",
+      "confidence": 0.09818948060274124,
+      "confidence_percent": "9.82%"
     }
   ],
   "annotated_image": "diagnosed_20180511_090912-14gtw8a-e1526047952754.jpg"

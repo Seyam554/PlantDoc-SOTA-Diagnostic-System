@@ -1,23 +1,23 @@
 {
   "image_file": "20180511_091252-1gy5xf5-e1526048000596.jpg",
-  "primary_diagnosis": "Squash Powdery mildew leaf",
-  "primary_confidence": "11.21%",
+  "primary_diagnosis": "Soyabean leaf",
+  "primary_confidence": "23.00%",
   "is_healthy": true,
   "top_3_predictions": [
     {
-      "class_name": "Squash Powdery mildew leaf",
-      "confidence": 0.11214205622673035,
-      "confidence_percent": "11.21%"
+      "class_name": "Soyabean leaf",
+      "confidence": 0.229962557554245,
+      "confidence_percent": "23.00%"
     },
     {
-      "class_name": "Corn leaf blight",
-      "confidence": 0.09446113556623459,
-      "confidence_percent": "9.45%"
+      "class_name": "Strawberry leaf",
+      "confidence": 0.12147088348865509,
+      "confidence_percent": "12.15%"
     },
     {
-      "class_name": "Corn rust leaf",
-      "confidence": 0.0736943855881691,
-      "confidence_percent": "7.37%"
+      "class_name": "Raspberry leaf",
+      "confidence": 0.09857365489006042,
+      "confidence_percent": "9.86%"
     }
   ],
   "annotated_image": "diagnosed_20180511_091252-1gy5xf5-e1526048000596.jpg"

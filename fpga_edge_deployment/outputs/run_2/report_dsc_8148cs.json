@@ -1,0 +1,26 @@
+{
+  "image_file": "dsc_8148cs.jpg",
+  "source_path": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\PlantDoc-Dataset\\test\\Tomato leaf late blight\\dsc_8148cs.jpg",
+  "primary_diagnosis": "Tomato leaf late blight",
+  "primary_confidence": "43.24%",
+  "confidence_value": 0.43240299820899963,
+  "is_healthy": false,
+  "top_3_predictions": [
+    {
+      "class_name": "Tomato leaf late blight",
+      "confidence": 0.43240299820899963,
+      "confidence_percent": "43.24%"
+    },
+    {
+      "class_name": "Potato leaf late blight",
+      "confidence": 0.12491967529058456,
+      "confidence_percent": "12.49%"
+    },
+    {
+      "class_name": "Tomato Early blight leaf",
+      "confidence": 0.11813350021839142,
+      "confidence_percent": "11.81%"
+    }
+  ],
+  "annotated_image": "diagnosed_dsc_8148cs.jpg"
+}

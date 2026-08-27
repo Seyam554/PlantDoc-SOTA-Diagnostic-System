@@ -1,0 +1,26 @@
+{
+  "image_file": "wild-strawberry-leaf-top-view-rotated-KTBXCY.jpg",
+  "source_path": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\PlantDoc-Dataset\\test\\Strawberry leaf\\wild-strawberry-leaf-top-view-rotated-KTBXCY.jpg",
+  "primary_diagnosis": "Strawberry leaf",
+  "primary_confidence": "29.30%",
+  "confidence_value": 0.29295074939727783,
+  "is_healthy": true,
+  "top_3_predictions": [
+    {
+      "class_name": "Strawberry leaf",
+      "confidence": 0.29295074939727783,
+      "confidence_percent": "29.30%"
+    },
+    {
+      "class_name": "Apple leaf",
+      "confidence": 0.2284649908542633,
+      "confidence_percent": "22.85%"
+    },
+    {
+      "class_name": "Raspberry leaf",
+      "confidence": 0.1823301911354065,
+      "confidence_percent": "18.23%"
+    }
+  ],
+  "annotated_image": "diagnosed_wild-strawberry-leaf-top-view-rotated-KTBXCY.jpg"
+}

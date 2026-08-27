@@ -1,0 +1,26 @@
+{
+  "image_file": "tmv-tomato-9.jpg",
+  "source_path": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\PlantDoc-Dataset\\test\\Tomato leaf mosaic virus\\tmv-tomato-9.jpg",
+  "primary_diagnosis": "Cherry leaf",
+  "primary_confidence": "24.01%",
+  "confidence_value": 0.24013139307498932,
+  "is_healthy": true,
+  "top_3_predictions": [
+    {
+      "class_name": "Cherry leaf",
+      "confidence": 0.24013139307498932,
+      "confidence_percent": "24.01%"
+    },
+    {
+      "class_name": "grape leaf",
+      "confidence": 0.14154915511608124,
+      "confidence_percent": "14.15%"
+    },
+    {
+      "class_name": "Blueberry leaf",
+      "confidence": 0.0925588607788086,
+      "confidence_percent": "9.26%"
+    }
+  ],
+  "annotated_image": "diagnosed_tmv-tomato-9.jpg"
+}

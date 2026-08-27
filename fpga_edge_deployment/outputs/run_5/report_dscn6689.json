@@ -1,0 +1,26 @@
+{
+  "image_file": "dscn6689.jpg",
+  "source_path": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\PlantDoc-Dataset\\test\\Tomato mold leaf\\dscn6689.jpg",
+  "primary_diagnosis": "Tomato mold leaf",
+  "primary_confidence": "35.77%",
+  "confidence_value": 0.3576798439025879,
+  "is_healthy": true,
+  "top_3_predictions": [
+    {
+      "class_name": "Tomato mold leaf",
+      "confidence": 0.3576798439025879,
+      "confidence_percent": "35.77%"
+    },
+    {
+      "class_name": "Tomato leaf late blight",
+      "confidence": 0.18265332281589508,
+      "confidence_percent": "18.27%"
+    },
+    {
+      "class_name": "Potato leaf early blight",
+      "confidence": 0.07888025790452957,
+      "confidence_percent": "7.89%"
+    }
+  ],
+  "annotated_image": "diagnosed_dscn6689.jpg"
+}

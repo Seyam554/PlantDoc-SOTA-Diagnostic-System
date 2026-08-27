@@ -1,0 +1,26 @@
+{
+  "image_file": "Black%20rot%20on%20foliage2.jpg",
+  "source_path": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\PlantDoc-Dataset\\test\\grape leaf black rot\\Black%20rot%20on%20foliage2.jpg",
+  "primary_diagnosis": "Apple Scab Leaf",
+  "primary_confidence": "17.16%",
+  "confidence_value": 0.17156675457954407,
+  "is_healthy": true,
+  "top_3_predictions": [
+    {
+      "class_name": "Apple Scab Leaf",
+      "confidence": 0.17156675457954407,
+      "confidence_percent": "17.16%"
+    },
+    {
+      "class_name": "grape leaf black rot",
+      "confidence": 0.10811358690261841,
+      "confidence_percent": "10.81%"
+    },
+    {
+      "class_name": "Corn rust leaf",
+      "confidence": 0.08525833487510681,
+      "confidence_percent": "8.53%"
+    }
+  ],
+  "annotated_image": "diagnosed_Black%20rot%20on%20foliage2.jpg"
+}

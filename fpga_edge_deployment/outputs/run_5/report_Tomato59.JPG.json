@@ -1,0 +1,26 @@
+{
+  "image_file": "Tomato59.JPG.jpg",
+  "source_path": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\PlantDoc-Dataset\\test\\Tomato leaf\\Tomato59.JPG.jpg",
+  "primary_diagnosis": "Tomato leaf bacterial spot",
+  "primary_confidence": "9.18%",
+  "confidence_value": 0.09179212152957916,
+  "is_healthy": false,
+  "top_3_predictions": [
+    {
+      "class_name": "Tomato leaf bacterial spot",
+      "confidence": 0.09179212152957916,
+      "confidence_percent": "9.18%"
+    },
+    {
+      "class_name": "Apple rust leaf",
+      "confidence": 0.08778899163007736,
+      "confidence_percent": "8.78%"
+    },
+    {
+      "class_name": "Tomato Septoria leaf spot",
+      "confidence": 0.07768334448337555,
+      "confidence_percent": "7.77%"
+    }
+  ],
+  "annotated_image": "diagnosed_Tomato59.JPG.jpg"
+}

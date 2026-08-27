@@ -1,0 +1,26 @@
+{
+  "image_file": "brleaf2_zoom.jpg",
+  "source_path": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\PlantDoc-Dataset\\test\\grape leaf black rot\\brleaf2_zoom.jpg",
+  "primary_diagnosis": "grape leaf black rot",
+  "primary_confidence": "56.74%",
+  "confidence_value": 0.5673863887786865,
+  "is_healthy": false,
+  "top_3_predictions": [
+    {
+      "class_name": "grape leaf black rot",
+      "confidence": 0.5673863887786865,
+      "confidence_percent": "56.74%"
+    },
+    {
+      "class_name": "Apple rust leaf",
+      "confidence": 0.09737207740545273,
+      "confidence_percent": "9.74%"
+    },
+    {
+      "class_name": "Corn Gray leaf spot",
+      "confidence": 0.04631726071238518,
+      "confidence_percent": "4.63%"
+    }
+  ],
+  "annotated_image": "diagnosed_brleaf2_zoom.jpg"
+}

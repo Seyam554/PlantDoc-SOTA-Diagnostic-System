@@ -1,0 +1,26 @@
+{
+  "image_file": "three-vibrant-leaves-bird-cherry-tree-13905898.jpg",
+  "source_path": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\PlantDoc-Dataset\\test\\Cherry leaf\\three-vibrant-leaves-bird-cherry-tree-13905898.jpg",
+  "primary_diagnosis": "Peach leaf",
+  "primary_confidence": "67.09%",
+  "confidence_value": 0.670890212059021,
+  "is_healthy": true,
+  "top_3_predictions": [
+    {
+      "class_name": "Peach leaf",
+      "confidence": 0.670890212059021,
+      "confidence_percent": "67.09%"
+    },
+    {
+      "class_name": "Apple leaf",
+      "confidence": 0.07404067367315292,
+      "confidence_percent": "7.40%"
+    },
+    {
+      "class_name": "Blueberry leaf",
+      "confidence": 0.0639881119132042,
+      "confidence_percent": "6.40%"
+    }
+  ],
+  "annotated_image": "diagnosed_three-vibrant-leaves-bird-cherry-tree-13905898.jpg"
+}

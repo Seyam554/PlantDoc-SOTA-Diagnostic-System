@@ -54,6 +54,72 @@ def get_next_run_dir(base_output_dir):
     os.makedirs(run_dir, exist_ok=True)
     return run_dir, run_folder_name
 
+def draw_high_visibility_label(draw, img_size, xmin, ymin, xmax, ymax, label_text, is_healthy=False):
+    """
+    Renders high-visibility, large, readable badges with solid backgrounds and thick bounding boxes.
+    """
+    w_orig, h_orig = img_size
+    
+    # 1. Determine dynamic font size and border thickness based on image resolution
+    min_dim = min(w_orig, h_orig)
+    font_size = max(18, min(48, int(min_dim * 0.045)))
+    border_width = max(4, min(10, int(min_dim * 0.009)))
+    
+    # Load bold TrueType font
+    font = None
+    for fname in ["arialbd.ttf", "arial.ttf", "DejaVuSans-Bold.ttf", "calibri.ttf", "segoeui.ttf"]:
+        try:
+            font = ImageFont.truetype(fname, font_size)
+            break
+        except Exception:
+            pass
+    if font is None:
+        try:
+            font = ImageFont.load_default(size=font_size)
+        except Exception:
+            font = ImageFont.load_default()
+
+    # Colors
+    badge_bg = "#1B5E20" if is_healthy else "#B71C1C"      # Solid deep green / deep red
+    box_border = "#00E676" if is_healthy else "#FF1744"    # Vibrant neon green / neon red
+    text_color = "#FFFFFF"                                 # High contrast white
+
+    # 2. Draw thick bounding box
+    for offset in range(border_width):
+        draw.rectangle(
+            [xmin + offset, ymin + offset, xmax - offset, ymax - offset],
+            outline=box_border
+        )
+
+    # 3. Compute text size
+    pad_x = max(10, int(font_size * 0.45))
+    pad_y = max(6, int(font_size * 0.25))
+
+    try:
+        t_bbox = draw.textbbox((0, 0), label_text, font=font)
+        text_w = t_bbox[2] - t_bbox[0]
+        text_h = t_bbox[3] - t_bbox[1]
+    except Exception:
+        text_w = font_size * len(label_text) * 0.6
+        text_h = font_size
+
+    # Position badge at top of box or inside if too close to top edge
+    badge_x1 = max(0, xmin)
+    badge_y1 = max(0, ymin - text_h - pad_y * 2)
+    if badge_y1 == 0 and ymin < (text_h + pad_y * 2):
+        badge_y1 = min(h_orig - text_h - pad_y * 2, ymin + border_width)
+
+    badge_x2 = min(w_orig, badge_x1 + text_w + pad_x * 2)
+    badge_y2 = min(h_orig, badge_y1 + text_h + pad_y * 2)
+
+    # Draw solid filled badge with white border
+    draw.rectangle([badge_x1, badge_y1, badge_x2, badge_y2], fill=badge_bg, outline="#FFFFFF", width=2)
+
+    # Draw bold white text inside the badge
+    text_x = badge_x1 + pad_x
+    text_y = badge_y1 + pad_y
+    draw.text((text_x, text_y), label_text, fill=text_color, font=font)
+
 def parse_args():
     parser = argparse.ArgumentParser(description="PlantEdgeNet Random Image Inference & Diagnosis")
     parser.add_argument("--image", type=str, default=None, help="Path to single input image (optional)")
@@ -125,15 +191,20 @@ class PlantDoctorEdge:
 
         primary_pred = predictions[0]
         is_healthy = "healthy" in primary_pred["class_name"].lower() or primary_pred["class_name"].lower().endswith(" leaf")
-        color = "#00FF00" if is_healthy else "#FF0000"
 
-        # 3. Draw visual annotations
+        # 3. Draw high-visibility annotations
         draw = ImageDraw.Draw(img_orig)
-        label_text = f"{primary_pred['class_name']} ({primary_pred['confidence_percent']})"
-        
-        for offset in range(3):
-            draw.rectangle([offset, offset, w_orig - offset, h_orig - offset], outline=color)
-        draw.text((10, 10), label_text, fill=color)
+        label_text = f" {primary_pred['class_name']} | {primary_pred['confidence_percent']} "
+        draw_high_visibility_label(
+            draw=draw,
+            img_size=(w_orig, h_orig),
+            xmin=0,
+            ymin=0,
+            xmax=w_orig,
+            ymax=h_orig,
+            label_text=label_text,
+            is_healthy=is_healthy
+        )
 
         clean_base = os.path.splitext(os.path.basename(image_path))[0].replace(" ", "_").replace("?", "_")
         annotated_path = os.path.join(output_dir, f"diagnosed_{clean_base}.jpg")

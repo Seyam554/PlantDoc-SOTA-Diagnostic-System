@@ -1,0 +1,35 @@
+{
+  "run_folder": "run_4",
+  "run_directory": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\fpga_edge_deployment\\outputs\\run_4",
+  "timestamp": "2026-08-27T22:19:00.943373",
+  "checkpoint": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\fpga_edge_deployment\\checkpoints\\plantedge_w1.00_best.pth",
+  "total_images_processed": 1,
+  "results": [
+    {
+      "image_file": "powdery-mildew-erysiphe-plantani-on-young-sycamore-leaves-b774tm.jpg",
+      "source_path": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\PlantDoc-Dataset\\test\\Squash Powdery mildew leaf\\powdery-mildew-erysiphe-plantani-on-young-sycamore-leaves-b774tm.jpg",
+      "primary_diagnosis": "Tomato leaf bacterial spot",
+      "primary_confidence": "18.78%",
+      "confidence_value": 0.18778404593467712,
+      "is_healthy": false,
+      "top_3_predictions": [
+        {
+          "class_name": "Tomato leaf bacterial spot",
+          "confidence": 0.18778404593467712,
+          "confidence_percent": "18.78%"
+        },
+        {
+          "class_name": "Tomato leaf mosaic virus",
+          "confidence": 0.1396969109773636,
+          "confidence_percent": "13.97%"
+        },
+        {
+          "class_name": "Tomato mold leaf",
+          "confidence": 0.11598549783229828,
+          "confidence_percent": "11.60%"
+        }
+      ],
+      "annotated_image": "diagnosed_powdery-mildew-erysiphe-plantani-on-young-sycamore-leaves-b774tm.jpg"
+    }
+  ]
+}

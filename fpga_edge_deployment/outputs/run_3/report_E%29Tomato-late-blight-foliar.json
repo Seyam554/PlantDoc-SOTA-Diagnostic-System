@@ -1,0 +1,26 @@
+{
+  "image_file": "E%29Tomato-late-blight-foliar.jpg",
+  "source_path": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\PlantDoc-Dataset\\test\\Tomato leaf late blight\\E%29Tomato-late-blight-foliar.jpg",
+  "primary_diagnosis": "Potato leaf early blight",
+  "primary_confidence": "10.66%",
+  "confidence_value": 0.10659784078598022,
+  "is_healthy": false,
+  "top_3_predictions": [
+    {
+      "class_name": "Potato leaf early blight",
+      "confidence": 0.10659784078598022,
+      "confidence_percent": "10.66%"
+    },
+    {
+      "class_name": "Potato leaf late blight",
+      "confidence": 0.0920109748840332,
+      "confidence_percent": "9.20%"
+    },
+    {
+      "class_name": "Tomato mold leaf",
+      "confidence": 0.07225536555051804,
+      "confidence_percent": "7.23%"
+    }
+  ],
+  "annotated_image": "diagnosed_E%29Tomato-late-blight-foliar.jpg"
+}

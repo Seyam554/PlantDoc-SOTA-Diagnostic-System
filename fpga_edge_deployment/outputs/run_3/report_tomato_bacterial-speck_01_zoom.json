@@ -1,0 +1,26 @@
+{
+  "image_file": "tomato_bacterial-speck_01_zoom.jpg",
+  "source_path": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\PlantDoc-Dataset\\test\\Tomato leaf bacterial spot\\tomato_bacterial-speck_01_zoom.jpg",
+  "primary_diagnosis": "Tomato leaf bacterial spot",
+  "primary_confidence": "24.63%",
+  "confidence_value": 0.24629327654838562,
+  "is_healthy": false,
+  "top_3_predictions": [
+    {
+      "class_name": "Tomato leaf bacterial spot",
+      "confidence": 0.24629327654838562,
+      "confidence_percent": "24.63%"
+    },
+    {
+      "class_name": "Tomato Septoria leaf spot",
+      "confidence": 0.239519402384758,
+      "confidence_percent": "23.95%"
+    },
+    {
+      "class_name": "Tomato Early blight leaf",
+      "confidence": 0.16931991279125214,
+      "confidence_percent": "16.93%"
+    }
+  ],
+  "annotated_image": "diagnosed_tomato_bacterial-speck_01_zoom.jpg"
+}

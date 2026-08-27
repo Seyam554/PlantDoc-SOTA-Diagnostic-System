@@ -15,6 +15,72 @@ from models_sota import get_sota_model
 if sys.platform == "win32":
     sys.stdout.reconfigure(encoding="utf-8")
 
+def draw_high_visibility_label(draw, img_size, xmin, ymin, xmax, ymax, label_text, is_healthy=False):
+    """
+    Renders high-visibility, large, readable badges with solid backgrounds and thick bounding boxes.
+    """
+    w_orig, h_orig = img_size
+    
+    # 1. Determine dynamic font size and border thickness based on image resolution
+    min_dim = min(w_orig, h_orig)
+    font_size = max(18, min(48, int(min_dim * 0.045)))
+    border_width = max(4, min(10, int(min_dim * 0.009)))
+    
+    # Load bold TrueType font
+    font = None
+    for fname in ["arialbd.ttf", "arial.ttf", "DejaVuSans-Bold.ttf", "calibri.ttf", "segoeui.ttf"]:
+        try:
+            font = ImageFont.truetype(fname, font_size)
+            break
+        except Exception:
+            pass
+    if font is None:
+        try:
+            font = ImageFont.load_default(size=font_size)
+        except Exception:
+            font = ImageFont.load_default()
+
+    # Colors
+    badge_bg = "#1B5E20" if is_healthy else "#B71C1C"      # Solid deep green / deep red
+    box_border = "#00E676" if is_healthy else "#FF1744"    # Vibrant neon green / neon red
+    text_color = "#FFFFFF"                                 # High contrast white
+
+    # 2. Draw thick bounding box
+    for offset in range(border_width):
+        draw.rectangle(
+            [xmin + offset, ymin + offset, xmax - offset, ymax - offset],
+            outline=box_border
+        )
+
+    # 3. Compute text size
+    pad_x = max(10, int(font_size * 0.45))
+    pad_y = max(6, int(font_size * 0.25))
+
+    try:
+        t_bbox = draw.textbbox((0, 0), label_text, font=font)
+        text_w = t_bbox[2] - t_bbox[0]
+        text_h = t_bbox[3] - t_bbox[1]
+    except Exception:
+        text_w = font_size * len(label_text) * 0.6
+        text_h = font_size
+
+    # Position badge at top of box or inside if too close to top edge
+    badge_x1 = max(0, xmin)
+    badge_y1 = max(0, ymin - text_h - pad_y * 2)
+    if badge_y1 == 0 and ymin < (text_h + pad_y * 2):
+        badge_y1 = min(h_orig - text_h - pad_y * 2, ymin + border_width)
+
+    badge_x2 = min(w_orig, badge_x1 + text_w + pad_x * 2)
+    badge_y2 = min(h_orig, badge_y1 + text_h + pad_y * 2)
+
+    # Draw solid filled badge with white border
+    draw.rectangle([badge_x1, badge_y1, badge_x2, badge_y2], fill=badge_bg, outline="#FFFFFF", width=2)
+
+    # Draw bold white text inside the badge
+    text_x = badge_x1 + pad_x
+    text_y = badge_y1 + pad_y
+    draw.text((text_x, text_y), label_text, fill=text_color, font=font)
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Run 3-Stage Plant Disease Model on Random Test Images")
     parser.add_argument("--num-images", type=int, default=10, help="Number of random test images to sample")
@@ -56,42 +122,46 @@ class EndToEndPlantDoctor:
             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
         ])
 
-    @torch.no_grad()
-    def classify_crop(self, crop_img):
-        tensor = self.transform(crop_img).unsqueeze(0).to(self.device)
-        tensor_flipped = torch.flip(tensor, dims=[-1])
-        logits1 = self.classifier(tensor)
-        logits2 = self.classifier(tensor_flipped)
-        probs = (torch.softmax(logits1, dim=1) + torch.softmax(logits2, dim=1)) / 2.0
+    def classify_crop(self, pil_crop):
+        tensor = self.transform(pil_crop).unsqueeze(0).to(self.device)
+        with torch.no_grad():
+            outputs = self.classifier(tensor)
+            probs = torch.softmax(outputs, dim=1)
+            conf, pred_idx = torch.max(probs, 1)
+        return self.classes[pred_idx.item()], conf.item()
 
-        top_prob, top_idx = torch.max(probs, 1)
-        pred_class = self.classes[top_idx.item()]
-        return pred_class, top_prob.item()
-
-    def process_image(self, image_path, conf_thresh=0.25, output_dir="output"):
+    def process_image(self, image_path, output_dir, conf_threshold=0.25):
         img_orig = Image.open(image_path).convert("RGB")
         w_orig, h_orig = img_orig.size
 
-        # Stage 1: Leaf Localization
-        yolo_results = self.detector.predict(image_path, conf=conf_thresh, verbose=False)
-        boxes = yolo_results[0].boxes
+        # Stage 1: Leaf Detection
+        results = self.detector(image_path, conf=conf_threshold, verbose=False)
+        boxes = results[0].boxes
 
         draw = ImageDraw.Draw(img_orig)
         diagnoses = []
 
         if len(boxes) == 0:
-            # Fallback to full scene
+            # Fallback to whole image classification
             pred_class, confidence = self.classify_crop(img_orig)
+            is_healthy = "healthy" in pred_class.lower() or pred_class.lower().endswith(" leaf")
             diagnoses.append({
                 "region_id": 1,
                 "bbox": [0, 0, w_orig, h_orig],
-                "detector_conf": 1.0,
                 "disease": pred_class,
                 "confidence": confidence,
                 "is_fallback_full_scene": True
             })
-            draw.rectangle([0, 0, w_orig, h_orig], outline="blue", width=3)
-            draw.text((10, 10), f"Full Scene: {pred_class} ({confidence*100:.1f}%)", fill="blue")
+            draw_high_visibility_label(
+                draw=draw,
+                img_size=(w_orig, h_orig),
+                xmin=0,
+                ymin=0,
+                xmax=w_orig,
+                ymax=h_orig,
+                label_text=f" Full Scene: {pred_class} | {confidence*100:.1f}% ",
+                is_healthy=is_healthy
+            )
         else:
             for idx, box in enumerate(boxes):
                 coords = box.xyxy[0].cpu().numpy().astype(int)
@@ -116,19 +186,20 @@ class EndToEndPlantDoctor:
                     "confidence": float(disease_conf)
                 })
 
-                # Draw color-coded diagnosis
+                # Draw high-visibility color-coded diagnosis
                 is_healthy = "healthy" in pred_disease.lower() or pred_disease.lower().endswith(" leaf")
-                color = "#00FF00" if is_healthy else "#FF0000"
+                label_text = f" [{idx+1}] {pred_disease} | {disease_conf*100:.1f}% "
                 
-                # Draw thick bounding box
-                for width_offset in range(3):
-                    draw.rectangle(
-                        [xmin - width_offset, ymin - width_offset, xmax + width_offset, ymax + width_offset],
-                        outline=color
-                    )
-
-                label_text = f"[{idx+1}] {pred_disease} ({disease_conf*100:.1f}%)"
-                draw.text((xmin + 4, max(4, ymin - 16)), label_text, fill=color)
+                draw_high_visibility_label(
+                    draw=draw,
+                    img_size=(w_orig, h_orig),
+                    xmin=xmin,
+                    ymin=ymin,
+                    xmax=xmax,
+                    ymax=ymax,
+                    label_text=label_text,
+                    is_healthy=is_healthy
+                )
 
         clean_base = os.path.splitext(os.path.basename(image_path))[0].replace(" ", "_").replace("?", "_")
         annotated_path = os.path.join(output_dir, f"diagnosed_{clean_base}.jpg")
@@ -160,71 +231,67 @@ def main():
         yolo_val = glob.glob("dataset_yolo/images/val/*.*")
         test_image_paths.extend([f for f in yolo_val if f.lower().endswith(('.jpg', '.jpeg', '.png'))])
 
-    # Priority 3: PlantDoc-Dataset test images
+    # Priority 3: PlantDoc test classification dataset
     if not test_image_paths:
-        pd_test = glob.glob("PlantDoc-Dataset/test/*/*.*")
-        test_image_paths.extend([f for f in pd_test if f.lower().endswith(('.jpg', '.jpeg', '.png'))])
+        cls_test = glob.glob("PlantDoc-Dataset/test/*/*.*")
+        test_image_paths.extend([f for f in cls_test if f.lower().endswith(('.jpg', '.jpeg', '.png'))])
 
     if not test_image_paths:
         print("Error: No test images found in dataset directories!")
         return
 
-    # Randomly select sample images
-    num_to_sample = min(args.num_images, len(test_image_paths))
-    selected_images = random.sample(test_image_paths, num_to_sample)
-    print(f"Randomly selected {num_to_sample} test images from {len(test_image_paths)} total test images.")
+    num_samples = min(args.num_images, len(test_image_paths))
+    selected_images = random.sample(test_image_paths, num_samples)
+    print(f"Selected {num_samples} random images from {len(test_image_paths)} total candidates.")
 
-    # 3. Load model and run inference
+    # 3. Load Pipeline
     doctor = EndToEndPlantDoctor(
         detector_path=args.detector_weights,
-        classifier_path=args.classifier_weights
+        classifier_path=args.classifier_weights,
+        img_size=518
     )
 
-    all_run_results = []
+    # 4. Run Diagnoses
+    run_summary = []
     print("\n" + "="*80)
-    print(f"{'#':<3} | {'Image File':<35} | {'Detections':<12} | {'Primary Diagnosis':<30}")
+    print(f"{'#':<3} | {'Image File':<32} | {'Leaves Found':<12} | {'Top Diagnosis':<26}")
     print("="*80)
 
     for i, img_path in enumerate(selected_images, 1):
         filename = os.path.basename(img_path)
-        diagnoses, out_img_path = doctor.process_image(
+        diagnoses, annotated_img = doctor.process_image(
             image_path=img_path,
-            conf_thresh=args.conf_threshold,
-            output_dir=run_dir
+            output_dir=run_dir,
+            conf_threshold=args.conf_threshold
         )
 
-        primary_diagnosis = diagnoses[0]["disease"] if diagnoses else "No leaf detected"
-        primary_conf = diagnoses[0]["confidence"] if diagnoses else 0.0
-        diag_summary = f"{primary_diagnosis} ({primary_conf*100:.1f}%)" if diagnoses else "N/A"
+        top_disease = diagnoses[0]["disease"] if diagnoses else "None"
+        top_conf = diagnoses[0]["confidence"] if diagnoses else 0.0
+        num_leaves = len(diagnoses)
 
-        print(f"{i:<3} | {filename[:33]:<35} | {len(diagnoses):<12} | {diag_summary:<30}")
+        print(f"{i:<3} | {filename[:30]:<32} | {num_leaves:<12} | {top_disease[:20]} ({top_conf*100:.1f}%)")
 
-        all_run_results.append({
-            "image_index": i,
-            "source_path": img_path,
-            "filename": filename,
-            "annotated_image": os.path.basename(out_img_path),
-            "num_regions_detected": len(diagnoses),
-            "diagnoses": diagnoses
+        run_summary.append({
+            "image_file": filename,
+            "source_path": os.path.abspath(img_path),
+            "num_leaves_detected": num_leaves,
+            "diagnoses": diagnoses,
+            "annotated_image": os.path.basename(annotated_img)
         })
 
-    # 4. Save comprehensive run summary report
-    summary_json_path = os.path.join(run_dir, "run_summary.json")
-    with open(summary_json_path, "w", encoding="utf-8") as f:
+    # 5. Save Run Report JSON
+    summary_path = os.path.join(run_dir, "run_summary.json")
+    with open(summary_path, "w", encoding="utf-8") as f:
         json.dump({
             "run_timestamp": timestamp_str,
-            "run_directory": run_dir,
-            "total_images_processed": num_to_sample,
-            "detector_model": args.detector_weights,
-            "classifier_model": args.classifier_weights,
+            "total_images_processed": len(selected_images),
             "confidence_threshold": args.conf_threshold,
-            "results": all_run_results
+            "results": run_summary
         }, f, indent=2)
 
     print("="*80)
-    print(f"\nAll {num_to_sample} images diagnosed and saved successfully!")
-    print(f"Output folder: {os.path.abspath(run_dir)}")
-    print(f"Summary JSON: {os.path.abspath(summary_json_path)}\n")
+    print(f"\nAll {len(selected_images)} random images diagnosed and saved to: {run_dir}")
+    print(f"Summary JSON: {summary_path}\n")
 
 if __name__ == "__main__":
     main()

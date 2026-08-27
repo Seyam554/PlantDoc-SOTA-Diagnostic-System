@@ -1,0 +1,26 @@
+{
+  "image_file": "Shoemaker_7068.JPG.jpg",
+  "source_path": "C:\\Users\\tazwa\\OneDrive\\Documents\\ICCIT_Paper\\PlantDoc-Dataset\\test\\Tomato Early blight leaf\\Shoemaker_7068.JPG.jpg",
+  "primary_diagnosis": "Squash Powdery mildew leaf",
+  "primary_confidence": "32.12%",
+  "confidence_value": 0.32121017575263977,
+  "is_healthy": true,
+  "top_3_predictions": [
+    {
+      "class_name": "Squash Powdery mildew leaf",
+      "confidence": 0.32121017575263977,
+      "confidence_percent": "32.12%"
+    },
+    {
+      "class_name": "Potato leaf early blight",
+      "confidence": 0.11062126606702805,
+      "confidence_percent": "11.06%"
+    },
+    {
+      "class_name": "Potato leaf late blight",
+      "confidence": 0.10598048567771912,
+      "confidence_percent": "10.60%"
+    }
+  ],
+  "annotated_image": "diagnosed_Shoemaker_7068.JPG.jpg"
+}

@@ -1,0 +1,24 @@
+{
+  "image_file": "20180511_091133-24l1vhg-e1526047988236.jpg",
+  "primary_diagnosis": "Squash Powdery mildew leaf",
+  "primary_confidence": "7.82%",
+  "is_healthy": true,
+  "top_3_predictions": [
+    {
+      "class_name": "Squash Powdery mildew leaf",
+      "confidence": 0.07822661846876144,
+      "confidence_percent": "7.82%"
+    },
+    {
+      "class_name": "Corn leaf blight",
+      "confidence": 0.07333884388208389,
+      "confidence_percent": "7.33%"
+    },
+    {
+      "class_name": "Corn rust leaf",
+      "confidence": 0.05816638842225075,
+      "confidence_percent": "5.82%"
+    }
+  ],
+  "annotated_image": "diagnosed_20180511_091133-24l1vhg-e1526047988236.jpg"
+}

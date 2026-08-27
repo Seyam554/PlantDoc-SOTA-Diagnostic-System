@@ -1,0 +1,24 @@
+{
+  "image_file": "20180511_090912-14gtw8a-e1526047952754.jpg",
+  "primary_diagnosis": "Corn leaf blight",
+  "primary_confidence": "6.90%",
+  "is_healthy": false,
+  "top_3_predictions": [
+    {
+      "class_name": "Corn leaf blight",
+      "confidence": 0.06904681771993637,
+      "confidence_percent": "6.90%"
+    },
+    {
+      "class_name": "Squash Powdery mildew leaf",
+      "confidence": 0.068760447204113,
+      "confidence_percent": "6.88%"
+    },
+    {
+      "class_name": "Tomato leaf late blight",
+      "confidence": 0.053626686334609985,
+      "confidence_percent": "5.36%"
+    }
+  ],
+  "annotated_image": "diagnosed_20180511_090912-14gtw8a-e1526047952754.jpg"
+}

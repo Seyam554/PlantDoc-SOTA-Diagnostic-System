@@ -1,0 +1,24 @@
+{
+  "image_file": "4120978-single-green-leaf-of-apple-tree.jpg",
+  "primary_diagnosis": "Apple leaf",
+  "primary_confidence": "31.27%",
+  "is_healthy": true,
+  "top_3_predictions": [
+    {
+      "class_name": "Apple leaf",
+      "confidence": 0.3127288818359375,
+      "confidence_percent": "31.27%"
+    },
+    {
+      "class_name": "Strawberry leaf",
+      "confidence": 0.21229413151741028,
+      "confidence_percent": "21.23%"
+    },
+    {
+      "class_name": "Peach leaf",
+      "confidence": 0.1522546261548996,
+      "confidence_percent": "15.23%"
+    }
+  ],
+  "annotated_image": "diagnosed_4120978-single-green-leaf-of-apple-tree.jpg"
+}
